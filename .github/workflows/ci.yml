@@ -18,3 +18,4 @@ jobs:
       - run: npm ci
       - run: eslint \"./**/*.{ts,tsx}\"
       - run: prettier --check "./**/*.{ts,tsx}"
+      - run: npm run build

@@ -10,11 +10,15 @@ on:
       - main
       - master
   jobs:
+    check_stylings:
+    name: Check Stylings
     runs-on: ubuntu-latest
     steps:
-      - name: Install Dependencies
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
         run: npm ci
-      - name: Run ESLint
         run: eslint \"./**/*.{ts,tsx}\"
-      - name: Run Prettier Check
         run: 'prettier --check "./**/*.{ts,tsx}"'

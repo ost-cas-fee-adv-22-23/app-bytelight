@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write . \"./**/*.{ts,tsx}\"",
+    "prettier:check": "prettier --check \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@smartive-education/design-system-component-library-bytelight": "^1.1.1",

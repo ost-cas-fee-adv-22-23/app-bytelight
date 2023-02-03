@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+      - feat/*
+      - fix/*
+      - chore/*
+      - update/*
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   style_checks:

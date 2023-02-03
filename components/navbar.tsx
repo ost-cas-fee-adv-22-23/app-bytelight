@@ -9,8 +9,8 @@ import { FC, useState } from 'react';
 import { SettingsModal } from './settings-modal';
 
 export const Navbar: FC = () => {
-  const [showSettingsModal, setShowSettingsModal] = useState<Boolean>(false);
-  const [inputValue, setInputValue] = useState<String>('');
+  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>('');
 
   const onInputHandler = (input: string) => {
     setInputValue(input);
@@ -29,7 +29,7 @@ export const Navbar: FC = () => {
           </NavbarButton>
         </div>
         <div className="text-white">
-          <NavbarButton label="Log Out" onClick={() => {}}>
+          <NavbarButton label="Log Out" onClick={() => console.log('log-out')}>
             <div className="text-white">
               <LogoutIcon size="16px" />
             </div>

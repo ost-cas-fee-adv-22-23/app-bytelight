@@ -22,5 +22,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - run: eslint \"./**/*.{ts,tsx}\"
-      - run: prettier --check "./**/*.{ts,tsx}"
+      - run: npm ci
+      - run: npm run eslint \"./**/*.{ts,tsx}\"
+      - run: npm run prettier --check "./**/*.{ts,tsx}"

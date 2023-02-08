@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feat/*
+      - fix/*
+      - chore/*
+      - update/*
+
+jobs:
+  style_checks:
+    name: Style Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: Authenticate with private NPM package
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN_BYTELIGHT }}" > ~/.npmrc
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Build
+        run: npm run build

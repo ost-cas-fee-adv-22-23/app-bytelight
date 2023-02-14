@@ -1,5 +1,8 @@
 import {
   ClockIcon,
+  CommentAction,
+  CommentEmptyIcon,
+  CommentFilledIcon,
   IconLabel,
   Label,
   LikeAction,
@@ -16,50 +19,53 @@ export type Props = {
 };
 
 export const MumbelPost: FC<Props> = ({ post }) => {
-  console.log('this is a post', post);
   const [likes, setLikes] = useState(post.likeCount);
-  const placeholderImage =
-    'https://www.travelandleisure.com/thmb/91pb8LbDAUwUN_11wATYjx5oF8Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/new-york-city-evening-NYCTG0221-52492d6ccab44f328a1c89f41ac02aea.jpg';
 
   return (
-    <>
-      <div className=" bg-slate-100 w-full h-full p-xl">
-        <div className=" bg-white w-[615px] h-[650px] p-xl rounded-2xl">
-          <div className="flex mb-s">
-            <ProfilePicture size="S" src={post.creator.avatarUrl} alt="profile-Picture" />
-            <div className="ml-xs">
-              <Label variant="M">{post.creator.userName}</Label>
-              <div className="flex gap-x-s">
-                <IconLabel variant="violet" value="BaumG" icon={<ProfileIcon size="12" />} />
-                <IconLabel variant="gray" value={'Today'} icon={<ClockIcon size="12" />} />
-              </div>
+    <div className="bg-slate-100 w-full h-full p-l flex justify-center">
+      <div className=" bg-white w-[615px] p-xl rounded-2xl">
+        <div className="flex mb-s">
+          <ProfilePicture size="S" src={post.creator.avatarUrl} alt="profile-Picture" />
+          <div className="ml-xs">
+            <Label variant="M">{post.creator.userName}</Label>
+            <div className="flex gap-x-s">
+              <IconLabel variant="violet" value="BaumG" icon={<ProfileIcon size="12" />} />
+              <IconLabel variant="gray" value={'Today'} icon={<ClockIcon size="12" />} />
             </div>
           </div>
-          <Paragraph fontSize="M">{post.text}</Paragraph>
+        </div>
+        <Paragraph fontSize="M">{post.text}</Paragraph>
+        {post.mediaUrl && (
           <div className="flex mt-s">
-            <Image
-              width={100}
-              height={100}
-              src={post.mediaUrl ? post.mediaUrl : placeholderImage}
-              className="rounded-xl w-full h-full"
-              alt="pic profile"
-            />
+            {/* eslint-disable-next-line react/forbid-component-props */}
+            <Image width={100} height={100} src={post.mediaUrl} className="rounded-xl w-full h-full" alt="pic profile" />
           </div>
-          <div className="flex justify-start gap-x-l mt-s">
-            <LikeAction
-              hasMyLike={post.likeCount > 0}
-              count={post.likeCount}
-              onClick={() => {
-                if (post.likeCount > 0) {
-                  setLikes(likes - 1);
-                  return;
-                }
-                setLikes(likes + 1);
-              }}
-            />
-          </div>
+        )}
+
+        <div className="flex justify-start gap-x-l mt-s">
+          <LikeAction
+            hasMyLike={post.likeCount > 0}
+            count={post.likeCount}
+            onClick={() => {
+              if (post.likeCount > 0) {
+                setLikes(likes - 1);
+                return;
+              }
+              setLikes(likes + 1);
+            }}
+          />
+          <CommentAction
+            onClick={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+            label={`${post.replyCount} Coms`}
+            icon={post.replyCount === 0 ? <CommentEmptyIcon size="16px" /> : <CommentFilledIcon size="16px" />}
+            count={post.replyCount}
+            // eslint-disable-next-line react/forbid-component-props
+            className={''}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -1,18 +1,9 @@
 import { GetServerSideProps, InferGetStaticPropsType } from 'next';
-import { MumbelPost } from '../components/mumbel-post';
-import { Post } from '../models/post';
 
-type PageProps = {
-  posts: { count: number; data: Post[] };
-};
-
-export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
-  console.log(posts.data);
+export default function PageHome(): InferGetStaticPropsType<typeof getServerSideProps> {
   return (
     <>
-      {posts.data.map((post) => (
-        <MumbelPost key={post.id} post={post} />
-      ))}
+      <h1>Hallo</h1>
     </>
   );
 }

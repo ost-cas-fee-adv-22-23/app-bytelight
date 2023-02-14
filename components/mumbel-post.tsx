@@ -10,24 +10,25 @@ import {
   ProfileIcon,
   ProfilePicture,
 } from '@smartive-education/design-system-component-library-bytelight';
-import { FC, useState } from 'react';
-import { Post } from '../models/post';
 import Image from 'next/image';
+import { FC, useState } from 'react';
+import { Mumble } from '../services/qwacker';
 
 export type Props = {
-  post: Post;
+  post: Mumble;
 };
 
 export const MumbelPost: FC<Props> = ({ post }) => {
   const [likes, setLikes] = useState(post.likeCount);
+  console.log(post, 'Hallo');
 
   return (
     <div className="bg-slate-100 w-full h-full p-l flex justify-center">
       <div className=" bg-white w-[615px] p-xl rounded-2xl">
         <div className="flex mb-s">
-          <ProfilePicture size="S" src={post.creator.avatarUrl} alt="profile-Picture" />
+          <ProfilePicture size="S" src={''} alt="" />
           <div className="ml-xs">
-            <Label variant="M">{post.creator.userName}</Label>
+            <Label variant="M">{post.creator}</Label>
             <div className="flex gap-x-s">
               <IconLabel variant="violet" value="BaumG" icon={<ProfileIcon size="12" />} />
               <IconLabel variant="gray" value={'Today'} icon={<ClockIcon size="12" />} />

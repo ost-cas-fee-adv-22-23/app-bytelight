@@ -4,6 +4,8 @@ import Head from 'next/head';
 export default function Home() {
   const { data: session } = useSession();
 
+  console.log('Session:', session?.user);
+
   return (
     <>
       <Head>

@@ -19,9 +19,9 @@ export type Props = {
 };
 
 export const MumbelPost: FC<Props> = ({ post }) => {
+  console.log(post);
   const [likes, setLikes] = useState(post.likeCount);
-  console.log(post, 'Hallo');
-
+  //here add session and call as serverside props     const user = await=fetchUserById({id: mumbles., })
   return (
     <div className="bg-slate-100 w-full h-full p-l flex justify-center">
       <div className=" bg-white w-[615px] p-xl rounded-2xl">

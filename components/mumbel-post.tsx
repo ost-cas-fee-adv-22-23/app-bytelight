@@ -19,19 +19,20 @@ export type Props = {
 };
 
 export const MumbelPost: FC<Props> = ({ post }) => {
-  console.log(post);
   const [likes, setLikes] = useState(post.likeCount);
-  //here add session and call as serverside props     const user = await=fetchUserById({id: mumbles., })
+  const dateFormat = new Date(post.createdTimestamp);
+  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+
   return (
     <div className="bg-slate-100 w-full h-full p-l flex justify-center">
       <div className=" bg-white w-[615px] p-xl rounded-2xl">
         <div className="flex mb-s">
           <ProfilePicture size="S" src={''} alt="" />
           <div className="ml-xs">
-            <Label variant="M">{post.creator}</Label>
+            <Label variant="M">{`${post.profile.user.firstName} ${post.profile.user.lastName}`}</Label>
             <div className="flex gap-x-s">
-              <IconLabel variant="violet" value="BaumG" icon={<ProfileIcon size="12" />} />
-              <IconLabel variant="gray" value={'Today'} icon={<ClockIcon size="12" />} />
+              <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
+              <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
             </div>
           </div>
         </div>

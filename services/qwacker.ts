@@ -8,6 +8,15 @@ export type Mumble = {
   mediaType: string;
   likeCount: number;
   likedByUser: boolean;
+  profile: {
+    user: {
+      avatarUrl: string;
+      id: string;
+      firstName: string;
+      lastName: string;
+      userName: string;
+    };
+  };
   type: string;
   replyCount: number;
   createdTimestamp: number;

@@ -64,7 +64,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req })
   try {
     const { count, mumbles } = await fetchMumbles({ limit: 1, accessToken: token.accessToken as string });
 
-    console.log('user: ', mumbles[0].profile.user);
     return { props: { count, mumbles } };
   } catch (error) {
     let message;

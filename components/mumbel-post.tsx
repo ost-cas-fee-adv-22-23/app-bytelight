@@ -20,7 +20,8 @@ export type Props = {
 
 export const MumbelPost: FC<Props> = ({ post }) => {
   const [likes, setLikes] = useState(post.likeCount);
-  console.log(post, 'Hallo');
+  const dateFormat = new Date(post.createdTimestamp);
+  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
 
   return (
     <div className="bg-slate-100 w-full h-full p-l flex justify-center">
@@ -28,10 +29,10 @@ export const MumbelPost: FC<Props> = ({ post }) => {
         <div className="flex mb-s">
           <ProfilePicture size="S" src={''} alt="" />
           <div className="ml-xs">
-            <Label variant="M">{post.creator}</Label>
+            <Label variant="M">{`${post.profile.user.firstName} ${post.profile.user.lastName}`}</Label>
             <div className="flex gap-x-s">
-              <IconLabel variant="violet" value="BaumG" icon={<ProfileIcon size="12" />} />
-              <IconLabel variant="gray" value={'Today'} icon={<ClockIcon size="12" />} />
+              <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
+              <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
             </div>
           </div>
         </div>

@@ -8,7 +8,6 @@ export default function PageHome(): InferGetStaticPropsType<typeof getServerSide
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  console.log('hoi');
   return {
     props: { posts: require('../data/posts.json') },
   };

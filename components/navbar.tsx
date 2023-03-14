@@ -5,24 +5,19 @@ import {
   ProfilePicture,
   SettingsIcon,
 } from '@smartive-education/design-system-component-library-bytelight';
-import { FC, useState } from 'react';
-import { SettingsModal } from './settings-modal';
+import Link from 'next/link';
 
-export const Navbar: FC = () => {
-  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>('');
-
-  const onInputHandler = (input: string) => {
-    setInputValue(input);
-  };
-
+export const Navbar = () => {
   return (
     <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
-      <NavbarMumble />
+      <Link href={'/feed'}>
+        <NavbarMumble />
+      </Link>
+
       <div className="w-full flex justify-end items-center gap-x-s">
         <ProfilePicture size="S" src="" alt="" />
         <div className="text-white">
-          <NavbarButton label="Settings" onClick={() => setShowSettingsModal(!showSettingsModal)}>
+          <NavbarButton label="Settings" onClick={() => alert('Hoi')}>
             <div className="group-hover:rotate-180 transition duration-1000 transform-none text-white">
               <SettingsIcon size="16px" />
             </div>
@@ -36,7 +31,6 @@ export const Navbar: FC = () => {
           </NavbarButton>
         </div>
       </div>
-      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} onInputHandler={onInputHandler} />}
     </div>
   );
 };

@@ -8,6 +8,15 @@ export type Mumble = {
   mediaType: string;
   likeCount: number;
   likedByUser: boolean;
+  profile: {
+    user: {
+      avatarUrl: string;
+      id: string;
+      firstName: string;
+      lastName: string;
+      userName: string;
+    };
+  };
   type: string;
   replyCount: number;
   createdTimestamp: number;
@@ -20,9 +29,22 @@ type QwackerMumbleResponse = {
   data: RawMumble[];
 };
 
-export const fetchMumbles = async (params?: { limit?: number; offset?: number; newerThanMumbleId?: string }) => {
-  const { limit, offset, newerThanMumbleId } = params || {};
+export type QwackerUserResponse = {
+  id: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+};
 
+//get Posts
+export const fetchMumbles = async (params?: {
+  limit?: number;
+  offset?: number;
+  newerThanMumbleId?: string;
+  accessToken?: string;
+}) => {
+  const { limit, offset, newerThanMumbleId, accessToken } = params || {};
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
@@ -32,18 +54,39 @@ export const fetchMumbles = async (params?: { limit?: number; offset?: number; n
   const res = await fetch(url, {
     headers: {
       'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   const { count, data } = (await res.json()) as QwackerMumbleResponse;
 
-  const mumbles = data.map(transformMumble);
+  const mumbles = await Promise.all(data.map(async (mumble) => await transformMumble(mumble, accessToken)));
 
   return {
     count,
     mumbles,
   };
 };
-const transformMumble = (mumble: RawMumble) => ({
-  ...mumble,
-  createdTimestamp: decodeTime(mumble.id),
-});
+
+//get User
+export const fetchUserById = async ({ id, accessToken }: { id: string; accessToken?: string }) => {
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users/${id}`;
+
+  const res = await fetch(url, {
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const user = (await res.json()) as QwackerUserResponse;
+
+  return { user };
+};
+
+const transformMumble = async (mumble: RawMumble, accessToken?: string) => {
+  return {
+    ...mumble,
+    profile: await fetchUserById({ id: mumble.creator, accessToken }),
+    createdTimestamp: decodeTime(mumble.id),
+  };
+};

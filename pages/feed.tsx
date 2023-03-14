@@ -2,7 +2,6 @@ import { Button } from '@smartive-education/design-system-component-library-byte
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MumbelPost } from '../components/mumbel-post';
 import { fetchMumbles, Mumble } from '../services/qwacker';
@@ -20,7 +19,6 @@ export default function Page({
   const [mumbles, setMumbles] = useState(initialMumbles);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
-  const router = useRouter();
 
   if (error) {
     return <div>An error occurred: {error}</div>;

@@ -22,7 +22,7 @@ export const MumbelPost: FC<Props> = ({ post }) => {
   const [likes, setLikes] = useState(post.likeCount);
   const dateFormat = new Date(post.createdTimestamp);
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
-  console.log('Whats up');
+
   return (
     <div className="bg-slate-100 w-full h-full p-l flex justify-center">
       <div className=" bg-white w-[615px] p-xl rounded-2xl">

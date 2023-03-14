@@ -5,6 +5,15 @@ const nextConfig = {
   images: {
     domains: ['storage.googleapis.com', 'www.travelandleisure.com'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/feed',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

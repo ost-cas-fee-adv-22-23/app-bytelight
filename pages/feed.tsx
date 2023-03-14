@@ -1,6 +1,8 @@
 import { Button } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MumbelPost } from '../components/mumbel-post';
 import { fetchMumbles, Mumble } from '../services/qwacker';
@@ -18,6 +20,7 @@ export default function Page({
   const [mumbles, setMumbles] = useState(initialMumbles);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
+  const router = useRouter();
 
   if (error) {
     return <div>An error occurred: {error}</div>;
@@ -33,25 +36,28 @@ export default function Page({
     setHasMore(mumbles.length + newMumbles.length < count);
     setMumbles([...mumbles, ...newMumbles]);
   };
+
   return (
-    <>
+    <div className='bg-[#F1F5F9] w-screen h-screen"'>
       <ul>
         {mumbles.map((mumble) => (
-          <li key={mumble.id}>
-            <MumbelPost post={mumble} />
-          </li>
+          <Link key={mumble.id} href={`/mumble/${mumble.id}`}>
+            <li>
+              <MumbelPost post={mumble} />
+            </li>
+          </Link>
         ))}
       </ul>
-      {hasMore ? (
-        <div className="inline-flex">
-          <Button onClick={() => loadMore()} as="button">
-            {loading ? '...' : 'Load more'}
-          </Button>
+      {hasMore && (
+        <div className="flex justify-center bg-[#F1F5F9] pb-l">
+          <div>
+            <Button onClick={() => loadMore()} as="button">
+              {loading ? '...' : 'Load more'}
+            </Button>
+          </div>
         </div>
-      ) : (
-        ''
       )}
-    </>
+    </div>
   );
 }
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req }) => {

@@ -9,6 +9,7 @@ import {
   Paragraph,
   ProfileIcon,
   ProfilePicture,
+  ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
 import Image from 'next/image';
 import { FC, useState } from 'react';
@@ -20,7 +21,7 @@ export type Props = {
 
 export const MumbelPost: FC<Props> = ({ post }) => {
   const [likes, setLikes] = useState(post.likeCount);
-  const dateFormat = new Date(post.createdTimestamp);
+  const dateFormat = new Date(post.createdTimestamp ?? '1111');
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
 
   return (
@@ -66,6 +67,8 @@ export const MumbelPost: FC<Props> = ({ post }) => {
             // eslint-disable-next-line react/forbid-component-props
             className={''}
           />
+
+          <ShareButton label="Copy Link" labelTransition="Copied!" link={post.text} />
         </div>
       </div>
     </div>

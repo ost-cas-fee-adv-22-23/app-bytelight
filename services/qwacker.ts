@@ -19,10 +19,10 @@ export type Mumble = {
   };
   type: string;
   replyCount: number;
-  createdTimestamp: number;
+  createdTimestamp?: number;
 };
 
-type RawMumble = Omit<Mumble, 'createdTimestamp'>;
+export type RawMumble = Omit<Mumble, 'createdTimestamp'>;
 
 type QwackerMumbleResponse = {
   count: number;
@@ -89,4 +89,16 @@ const transformMumble = async (mumble: RawMumble, accessToken?: string) => {
     profile: await fetchUserById({ id: mumble.creator, accessToken }),
     createdTimestamp: decodeTime(mumble.id),
   };
+};
+
+export const getMumbleById = async (id: string) => {
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
+
+  const response = await fetch(url, {
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
+  const mumble = (await response.json()) as RawMumble;
+  return mumble;
 };

@@ -3,7 +3,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Link from 'next/link';
 import { useState } from 'react';
-import { MumbelPost } from '../components/mumbel-post';
+import { MumblePost } from '../components/mumble-post';
 import { fetchMumbles, Mumble } from '../services/qwacker';
 
 type PageProps = {
@@ -41,7 +41,7 @@ export default function Page({
         {mumbles.map((mumble) => (
           <Link key={mumble.id} href={`/mumble/${mumble.id}`}>
             <li>
-              <MumbelPost post={mumble} />
+              <MumblePost post={mumble} />
             </li>
           </Link>
         ))}

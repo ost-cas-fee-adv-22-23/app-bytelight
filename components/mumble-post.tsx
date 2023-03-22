@@ -19,7 +19,7 @@ export type Props = {
   post: Mumble;
 };
 
-export const MumbelPost: FC<Props> = ({ post }) => {
+export const MumblePost: FC<Props> = ({ post }) => {
   const [likes, setLikes] = useState(post.likeCount);
   const dateFormat = new Date(post.createdTimestamp ?? '1111');
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();

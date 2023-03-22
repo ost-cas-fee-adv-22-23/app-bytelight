@@ -1,12 +1,12 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { MumbelPost } from '../../components/mumbel-post';
+import { MumblePost } from '../../components/mumble-post';
 import { getMumbleById } from '../../services/qwacker';
 
 const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ mumbleById }) => {
   return (
     <div className="bg-[#F1F5F9] w-screen h-screen">
-      <MumbelPost post={mumbleById} />
+      <MumblePost post={mumbleById} />
     </div>
   );
 };

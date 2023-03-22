@@ -25,7 +25,7 @@ export const MumbelPost: FC<Props> = ({ post }) => {
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
 
   return (
-    <div className="bg-slate-100 w-full h-full p-l flex justify-center">
+    <div className="bg-slate-100 p-l flex justify-center">
       <div className=" bg-white w-[615px] p-xl rounded-2xl">
         <div className="flex mb-s">
           <ProfilePicture size="S" src={''} alt="" />

@@ -36,7 +36,7 @@ export default function Page({
   };
 
   return (
-    <div className='bg-[#F1F5F9] w-screen h-screen"'>
+    <div className="bg-[#F1F5F9] w-screen h-screen">
       <ul>
         {mumbles.map((mumble) => (
           <Link key={mumble.id} href={`/mumble/${mumble.id}`}>
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req })
   }
 
   try {
-    const { count, mumbles } = await fetchMumbles({ limit: 1, accessToken: token.accessToken as string });
+    const { count, mumbles } = await fetchMumbles({ limit: 10, accessToken: token.accessToken as string });
 
     return { props: { count, mumbles } };
   } catch (error) {

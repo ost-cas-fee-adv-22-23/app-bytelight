@@ -5,6 +5,7 @@ import {
   ProfilePicture,
   SettingsIcon,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 export const Navbar = () => {
@@ -24,7 +25,7 @@ export const Navbar = () => {
           </NavbarButton>
         </div>
         <div className="text-white">
-          <NavbarButton label="Log Out" onClick={() => console.log('log-out')}>
+          <NavbarButton label="Log Out" onClick={() => signOut()}>
             <div className="text-white">
               <LogoutIcon size="16px" />
             </div>

@@ -26,7 +26,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
 
   return (
     <div className="bg-slate-100 py-4">
-      <div className=" bg-white w-[680px] px-xl py-8 rounded-2xl relative">
+      <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
         <div className="flex mb-s">
           <div className="absolute -left-8 top-5">
             <ProfilePicture
@@ -36,10 +36,9 @@ export const MumblePost: FC<Props> = ({ post }) => {
                   ? post.profile.user.avatarUrl
                   : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
               }
-              alt=""
+              alt="profile-picture"
             />
           </div>
-
           <div>
             <Label variant="M">{`${post.profile.user.firstName} ${post.profile.user.lastName}`}</Label>
             <div className="flex gap-x-s">
@@ -48,7 +47,6 @@ export const MumblePost: FC<Props> = ({ post }) => {
             </div>
           </div>
         </div>
-
         <Paragraph fontSize="M">{post.text}</Paragraph>
         {post.mediaUrl && (
           <div className="flex mt-s">
@@ -56,7 +54,6 @@ export const MumblePost: FC<Props> = ({ post }) => {
             <Image width={100} height={100} src={post.mediaUrl} className="rounded-xl w-full h-full" alt="pic profile" />
           </div>
         )}
-
         <div className="flex justify-start gap-x-l mt-s">
           <CommentAction
             onClick={function (): void {

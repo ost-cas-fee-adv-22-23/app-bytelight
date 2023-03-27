@@ -9,7 +9,6 @@ export default function Home() {
     <>
       <Head>
         <title>Login</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -22,10 +21,10 @@ export default function Home() {
               </h1>
             </div>
             <div className="flex flex-col justify-center items-center w-1/2 px-44 gap-y-5">
-              {!!session && (
+              {session && (
                 <>
                   <Heading1>Abmelden</Heading1>
-                  <Button as="button" onClick={() => signOut()}>
+                  <Button as="button" onClick={() => signOut({ callbackUrl: '/login' })}>
                     Logout
                   </Button>
                 </>
@@ -36,7 +35,7 @@ export default function Home() {
                   <Button
                     as="button"
                     onClick={() => {
-                      signIn('zitadel');
+                      signIn('zitadel', { callbackUrl: '/feed' });
                     }}
                   >
                     Login

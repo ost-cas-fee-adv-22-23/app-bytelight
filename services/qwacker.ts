@@ -91,14 +91,16 @@ const transformMumble = async (mumble: RawMumble, accessToken?: string) => {
   };
 };
 
-export const getMumbleById = async (id: string) => {
+export const getMumbleById = async (id: string, accessToken?: string) => {
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
 
-  const response = await fetch(url, {
+  const res = await fetch(url, {
     headers: {
       'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
-  const mumble = (await response.json()) as RawMumble;
-  return mumble;
+  const mumble = (await res.json()) as Mumble;
+
+  return await transformMumble(mumble, accessToken);
 };

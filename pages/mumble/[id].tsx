@@ -1,36 +1,32 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import { MumbelPost } from '../../components/mumbel-post';
-import { getMumbleById, RawMumble } from '../../services/qwacker';
+import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
+import { getToken } from 'next-auth/jwt';
+import { MumblePost } from '../../components/mumble-post';
+import { getMumbleById } from '../../services/qwacker';
 
-interface Params extends ParsedUrlQuery {
-  id: string;
-}
-
-type PageProps = {
-  mumbles: RawMumble;
-};
-
-export default function MumblePage({ mumbles }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ mumbleById }) => {
   return (
-    <div>
-      <MumbelPost post={mumbles} />
+    <div className="bg-[#F1F5F9] w-screen h-screen">
+      <MumblePost post={mumbleById} />
     </div>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps<PageProps, Params> = async ({ params }) => {
-  if (!params) {
-    return {
-      notFound: true,
-    };
+export default MumblePage;
+
+export const getServerSideProps = async ({ req, query }: GetServerSidePropsContext) => {
+  const token = await getToken({ req });
+
+  if (!token) {
+    throw Error('no token');
   }
 
-  const { id } = params;
-  const mumbles = await getMumbleById(id);
-  return {
-    props: {
-      mumbles,
-    },
-  };
+  const id = query.id;
+
+  try {
+    const mumbleById = await getMumbleById(id as string, token.accessToken);
+
+    return { props: { mumbleById } };
+  } catch (error) {
+    console.log('error');
+  }
 };

@@ -25,11 +25,22 @@ export const MumblePost: FC<Props> = ({ post }) => {
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
 
   return (
-    <div className="bg-slate-100 p-l flex justify-center">
-      <div className=" bg-white w-[615px] p-xl rounded-2xl">
+    <div className="bg-slate-100 py-4">
+      <div className=" bg-white w-[680px] px-xl py-8 rounded-2xl relative">
         <div className="flex mb-s">
-          <ProfilePicture size="S" src={''} alt="" />
-          <div className="ml-xs">
+          <div className="absolute -left-8 top-5">
+            <ProfilePicture
+              size="M"
+              src={
+                post.profile.user.avatarUrl
+                  ? post.profile.user.avatarUrl
+                  : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
+              }
+              alt=""
+            />
+          </div>
+
+          <div>
             <Label variant="M">{`${post.profile.user.firstName} ${post.profile.user.lastName}`}</Label>
             <div className="flex gap-x-s">
               <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
@@ -37,6 +48,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
             </div>
           </div>
         </div>
+
         <Paragraph fontSize="M">{post.text}</Paragraph>
         {post.mediaUrl && (
           <div className="flex mt-s">
@@ -46,6 +58,16 @@ export const MumblePost: FC<Props> = ({ post }) => {
         )}
 
         <div className="flex justify-start gap-x-l mt-s">
+          <CommentAction
+            onClick={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+            label={`${post.replyCount} Coms`}
+            icon={post.replyCount === 0 ? <CommentEmptyIcon size="16px" /> : <CommentFilledIcon size="16px" />}
+            count={post.replyCount}
+            // eslint-disable-next-line react/forbid-component-props
+            className={''}
+          />
           <LikeAction
             hasMyLike={post.likeCount > 0}
             count={post.likeCount}
@@ -57,17 +79,6 @@ export const MumblePost: FC<Props> = ({ post }) => {
               setLikes(likes + 1);
             }}
           />
-          <CommentAction
-            onClick={function (): void {
-              throw new Error('Function not implemented.');
-            }}
-            label={`${post.replyCount} Coms`}
-            icon={post.replyCount === 0 ? <CommentEmptyIcon size="16px" /> : <CommentFilledIcon size="16px" />}
-            count={post.replyCount}
-            // eslint-disable-next-line react/forbid-component-props
-            className={''}
-          />
-
           <ShareButton label="Copy Link" labelTransition="Copied!" link={post.text} />
         </div>
       </div>

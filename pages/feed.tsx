@@ -1,4 +1,4 @@
-import { Button } from '@smartive-education/design-system-component-library-bytelight';
+import { Button, Heading2, Heading4 } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Link from 'next/link';
@@ -36,7 +36,12 @@ export default function Page({
   };
 
   return (
-    <div className="bg-[#F1F5F9] w-screen h-screen">
+    <div className="bg-slate-100 flex flex-col items-center w-screen">
+      <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500">
+        <Heading2>Willkommen auf Mumble</Heading2>
+        <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
+      </div>
+
       <ul>
         {mumbles.map((mumble) => (
           <Link key={mumble.id} href={`/mumble/${mumble.id}`}>

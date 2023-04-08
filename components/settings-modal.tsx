@@ -17,15 +17,15 @@ type Props = {
   onInputHandler: (input: string) => void;
 };
 
-export const SettingsModal: FC<Props> = ({ onClose, onInputHandler }) => (
+export const SettingsModal: FC<Props> = ({ onClose }) => (
   <Modal onClose={onClose} title="Settings">
     <div className="flex flex-col px-l pb-l gap-y-xs">
       <Heading2>Einstellungen</Heading2>
-      <Input placeholder="" label="Name Vorname" labelVariant="S" onInput={onInputHandler} />
-      <Input placeholder="" label="E-Mail" labelVariant="S" onInput={onInputHandler} />
-      <Input placeholder="" label="Ortschaft" labelVariant="S" onInput={onInputHandler} />
+      <Input placeholder="" label="Name Vorname" labelVariant="S" onChange={() => ''} value="" />
+      <Input placeholder="" label="E-Mail" labelVariant="S" onChange={() => ''} value="" />
+      <Input placeholder="" label="Ortschaft" labelVariant="S" onChange={() => ''} value="" />
       <Label variant="S">Bio</Label>
-      <Textarea placeholder="" onTextareaChange={onInputHandler} />
+      <Textarea placeholder="" onChange={() => ''} value="" />
       <div className="flex flex-col mb-xxl gap-y-xs">
         <Heading2>Passwort ändern</Heading2>
         <InputWithIcon
@@ -33,16 +33,18 @@ export const SettingsModal: FC<Props> = ({ onClose, onInputHandler }) => (
           placeholder=""
           label="Altes Passwort"
           labelVariant="S"
-          onInput={onInputHandler}
+          onChange={() => ''}
           isPasswordInput
+          value=""
         />
         <InputWithIcon
           icon={<EyeIcon size="16" />}
           placeholder=""
           label="Neues Passwort"
           labelVariant="S"
-          onInput={onInputHandler}
+          onChange={() => ''}
           isPasswordInput
+          value=""
         />
       </div>
       <div className="flex gap-x-s">

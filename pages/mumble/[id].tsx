@@ -5,8 +5,10 @@ import { getMumbleById } from '../../services/qwacker';
 
 const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ mumbleById }) => {
   return (
-    <div className="bg-[#F1F5F9] w-screen h-screen">
-      <MumblePost post={mumbleById} />
+    <div className=" bg-slate-100 h-screen w-screen">
+      <div className="flex justify-center pt-xl">
+        <MumblePost post={mumbleById} />
+      </div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import { Button, Heading2, Heading4 } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
-import Link from 'next/link';
 import { useState } from 'react';
 import { MumblePost } from '../components/mumble-post';
-import { fetchMumbles, Mumble } from '../services/qwacker';
+import { TextareaCard } from '../components/textarea-card';
+import { Mumble, fetchMumbles } from '../services/qwacker';
 
 type PageProps = {
   count: number;
@@ -37,18 +37,19 @@ export default function Page({
 
   return (
     <div className="bg-slate-100 flex flex-col items-center w-screen">
-      <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500">
+      <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
         <Heading2>Willkommen auf Mumble</Heading2>
         <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
+        <div className="py-s">
+          <TextareaCard />
+        </div>
       </div>
 
-      <ul>
+      <ul className="flex flex-col gap-y-s">
         {mumbles.map((mumble) => (
-          <Link key={mumble.id} href={`/mumble/${mumble.id}`}>
-            <li>
-              <MumblePost post={mumble} />
-            </li>
-          </Link>
+          <li key={mumble.id}>
+            <MumblePost post={mumble} />
+          </li>
         ))}
       </ul>
       {hasMore && (

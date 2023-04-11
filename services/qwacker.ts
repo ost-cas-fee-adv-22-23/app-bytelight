@@ -104,3 +104,29 @@ export const getMumbleById = async (id: string, accessToken?: string) => {
 
   return await transformMumble(mumble, accessToken);
 };
+
+export const postMumble = async (text: string, accessToken?: string) => {
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+
+  const formData = new FormData();
+  formData.append('text', text);
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Something was not okay');
+    }
+
+    return transformMumble(await response.json());
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not post mumble');
+  }
+};

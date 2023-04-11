@@ -42,7 +42,9 @@ export const MumblePost: FC<Props> = ({ post }) => {
         <div>
           <Label variant="M">{`${post.profile.user.firstName} ${post.profile.user.lastName}`}</Label>
           <div className="flex gap-x-s">
-            <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
+            <Link href={`/profile/${post.creator}`}>
+              <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
+            </Link>
             <Link href={`/mumble/${post.id}`}>
               <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
             </Link>

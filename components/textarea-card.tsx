@@ -6,10 +6,21 @@ import {
   Textarea,
   UploadIcon,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { postMumble } from '../services/qwacker';
 
 export const TextareaCard = () => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const { data: session } = useSession();
+
+  const handleSubmit = async () => {
+    if (inputValue) {
+      const response = await postMumble(inputValue, session?.accessToken);
+      console.log('was sent', response);
+      //TODO: reload and empty inputField
+    }
+  };
 
   return (
     <div className="bg-white w-[680px]  px-xl py-l rounded-2xl relative">
@@ -33,7 +44,7 @@ export const TextareaCard = () => {
             Bild hochladen <UploadIcon size="16" />
           </div>
         </Button>
-        <Button as="button">
+        <Button as="button" onClick={() => handleSubmit()}>
           <div className="flex items-center justify-center gap-x-xs">
             Absenden <SendIcon size="16" />
           </div>

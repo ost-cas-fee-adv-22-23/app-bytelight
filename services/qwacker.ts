@@ -105,13 +105,16 @@ export const getMumbleById = async (id: string, accessToken?: string) => {
   return await transformMumble(mumble, accessToken);
 };
 
-export const postMumble = async (text: string, accessToken?: string) => {
+export const postMumble = async (text: string, file: File | undefined, accessToken?: string) => {
   if (!accessToken) {
     throw new Error('No access token');
   }
 
   const formData = new FormData();
   formData.append('text', text);
+  if (file) {
+    formData.append('image', file);
+  }
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, {

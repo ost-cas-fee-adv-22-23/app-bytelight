@@ -130,3 +130,11 @@ export const postMumble = async (text: string, accessToken?: string) => {
     throw new Error(error instanceof Error ? error.message : 'Could not post mumble');
   }
 };
+
+export const getPostsByUser = async (creatorId: string, accessToken?: string) => {
+  const { mumbles } = await fetchMumbles({
+    accessToken,
+  });
+
+  return mumbles.filter((mumble) => mumble.creator === creatorId);
+};

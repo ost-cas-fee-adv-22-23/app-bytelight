@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { fetchUserById } from '../../services/qwacker';
+import { Mumble, fetchUserById, getPostsByUser } from '../../services/qwacker';
 import {
   CalendarIcon,
   IconLabel,
@@ -11,6 +11,9 @@ import {
   ProfilePicture,
 } from '@smartive-education/design-system-component-library-bytelight';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { MumblePost } from '../../components/mumble-post';
 
 type PageProps = {
   profileUser: {
@@ -30,6 +33,24 @@ type PageProps = {
 export default function ProfilePage({ profileUser, error }: PageProps) {
   console.log(profileUser);
   const profileData = profileUser.user;
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userPosts, setUserPosts] = useState<Mumble[]>();
+
+  const myData = async () => {
+    const posts = await getPostsByUser(profileData.id, session?.accessToken);
+    return posts;
+  };
+
+  myData()
+    .then((data) => {
+      console.log('DATA:', data);
+      setUserPosts(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   if (error) {
     return <div>An error occurred: {error}</div>;
@@ -37,7 +58,7 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
 
   return (
     <>
-      <div className="flex bg-slate-100 w-full h-screen p-xl justify-center">
+      <div className="flex bg-slate-100 w-full min-h-screen p-xl justify-center">
         <div className="w-[615px] h-[650px] rounded-2xl">
           <div className="flex relative mt-s">
             <Image
@@ -73,7 +94,20 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
             sed quis cumque error magni. Deserunt pariatur molestiae incidunt. Omnis deserunt ratione et recusandae quos
             excepturi ut deleniti ut repellat magni.
           </Paragraph>
-          <h1>Posts:</h1>
+          <h1 className="mt-10 mb-4">Posts:</h1>
+          {isLoading ? (
+            <h1>Loading...</h1>
+          ) : userPosts ? (
+            <ul className="flex flex-col gap-y-s">
+              {userPosts.map((post) => (
+                <li key={post.id}>
+                  <MumblePost post={post} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <h1>No Posts</h1>
+          )}
         </div>
       </div>
     </>

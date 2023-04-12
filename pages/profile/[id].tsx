@@ -70,11 +70,7 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
               alt="dt"
             />
             <div className="absolute mt-[260px] ml-[420px]">
-              <ProfilePicture
-                size="XL"
-                src="https://qph.cf2.quoracdn.net/main-qimg-e43af1ea0978af7da031068531f8967b-lq"
-                alt="profile-Picture"
-              />
+              <ProfilePicture size="XL" src={profileUser.user.avatarUrl} alt="profile-Picture" />
             </div>
           </div>
           <div className="mt-m">

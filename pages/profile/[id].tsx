@@ -1,6 +1,3 @@
-import { GetServerSideProps } from 'next';
-import { getToken } from 'next-auth/jwt';
-import { Mumble, fetchUserById, getPostsByUser } from '../../services/qwacker';
 import {
   CalendarIcon,
   IconLabel,
@@ -10,10 +7,13 @@ import {
   ProfileIcon,
   ProfilePicture,
 } from '@smartive-education/design-system-component-library-bytelight';
-import Image from 'next/image';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { MumblePost } from '../../components/mumble-post';
+import { Mumble, fetchUserById, getPostsByUser } from '../../services/qwacker';
 
 type PageProps = {
   profileUser: {
@@ -31,7 +31,6 @@ type PageProps = {
 };
 
 export default function ProfilePage({ profileUser, error }: PageProps) {
-  console.log(profileUser);
   const profileData = profileUser.user;
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);

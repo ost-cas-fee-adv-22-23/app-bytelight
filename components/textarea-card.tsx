@@ -19,7 +19,6 @@ export const TextareaCard = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>();
   const [hasPreview, setHasPreview] = useState<string | undefined>('');
-  console.log(file);
   const { data: session } = useSession();
 
   const handleSubmit = async () => {

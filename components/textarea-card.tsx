@@ -16,24 +16,25 @@ import { UploadModal } from './upload-modal';
 export const TextareaCard = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [file, setFile] = useState<File | undefined>();
+  const [hasFile, setHasFile] = useState<File | undefined>();
   const [hasPreview, setHasPreview] = useState<string | undefined>('');
   const { data: session } = useSession();
 
   const handleSubmit = async () => {
-    const res = await postMumble(inputValue, file, session?.accessToken);
+    const res = await postMumble(inputValue, hasFile, session?.accessToken);
+    window.location.reload();
     return res;
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      setHasFile(e.target.files[0]);
       setHasPreview(URL.createObjectURL(e.target.files[0]));
     }
   };
 
   const handleCancel = () => {
-    setFile(undefined);
+    setHasFile(undefined);
     setHasPreview(undefined);
     setIsOpen(false);
   };
@@ -51,7 +52,7 @@ export const TextareaCard = () => {
               <ButtonRound
                 onClick={() => {
                   setHasPreview(undefined);
-                  setFile(undefined);
+                  setHasFile(undefined);
                   setInputValue('');
                 }}
               >

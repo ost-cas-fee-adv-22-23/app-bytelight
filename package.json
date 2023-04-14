@@ -13,7 +13,7 @@
     "style-check": "npm run lint && npm run prettier:check"
   },
   "dependencies": {
-    "@smartive-education/design-system-component-library-bytelight": "^1.1.5",
+    "@smartive-education/design-system-component-library-bytelight": "^1.1.6",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",

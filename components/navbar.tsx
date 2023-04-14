@@ -11,8 +11,6 @@ import Link from 'next/link';
 export const Navbar = () => {
   const { data: session } = useSession();
 
-  console.log(session?.user.avatarUrl);
-
   return (
     <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
       <Link href={'/feed'}>

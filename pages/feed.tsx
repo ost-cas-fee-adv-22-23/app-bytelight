@@ -24,6 +24,8 @@ export default function Page({
     return <div>An error occurred: {error}</div>;
   }
 
+  //arbeiten mit newerthann and older than for laodmore newThan wenn es um meldung geht ob noch neue dazugekommen sind, wenn ich leeres array bekommme dann hat es keine ansonsten hat es inhalt und ich kann meldung angeben
+
   const loadMore = async () => {
     const { count, mumbles: newMumbles } = await fetchMumbles({
       limit: 1,
@@ -41,6 +43,7 @@ export default function Page({
         <Heading2>Willkommen auf Mumble</Heading2>
         <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
         <div className="py-s">
+          {/* on create Mumble call back mitgeben und wie bei loadMore mumbles hinzufügen */}
           <TextareaCard />
         </div>
       </div>

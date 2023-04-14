@@ -43,7 +43,14 @@ export const TextareaCard = () => {
     <>
       <div className="bg-white w-[680px]  px-xl py-l rounded-2xl relative">
         <div className="absolute -left-8 top-5">
-          <ProfilePicture size="M" src={session?.user.avatarUrl ?? ''} alt="profile-picture" />
+          <ProfilePicture
+            size="M"
+            src={
+              session?.user.avatarUrl ??
+              'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
+            }
+            alt="profile-picture"
+          />
         </div>
         <div className="pb-l flex w-full justify-between">
           <Heading4>Hey was gibts neues?</Heading4>

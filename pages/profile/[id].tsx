@@ -11,12 +11,12 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MumblePost } from '../../components/mumble-post';
 import { Mumble, fetchUserById, getPostsByUser } from '../../services/qwacker';
 
 type PageProps = {
-  profileUser: {
+  profileUser?: {
     user: {
       id: string;
       userName: string;
@@ -29,31 +29,50 @@ type PageProps = {
   };
   error?: string;
 };
-
+// präsi: limitoffset here für loadmore anderst also bei feed
 export default function ProfilePage({ profileUser, error }: PageProps) {
-  const profileData = profileUser.user;
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userPosts, setUserPosts] = useState<Mumble[]>();
 
-  const myData = async () => {
-    const posts = await getPostsByUser(profileData.id, session?.accessToken);
-    return posts;
-  };
+  //PRäsi useEffect als hook asyncEffectHook direkt async funktionen bruachen
+  useEffect(() => {
+    setUserPosts([]);
+    setIsLoading(true);
 
-  myData()
-    .then((data) => {
-      console.log('DATA:', data);
-      setUserPosts(data);
-      setIsLoading(false);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    const asyncFunc = async () => {
+      const myData = async () => {
+        const posts = await getPostsByUser(profileData.id, session?.accessToken);
+        return posts;
+      };
+      try {
+        const data = await myData();
+        console.log('DATA:', data);
+        setUserPosts(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    asyncFunc();
+    //TODO: profileData.id needs to be added here in deps
+  }, [session?.accessToken]);
+
+  if (!profileUser) {
+    return <div>Fucked</div>;
+  }
+
+  const profileData = profileUser.user;
 
   if (error) {
     return <div>An error occurred: {error}</div>;
   }
+
+  // const useAsyncHook = (cb: <Promise>() => void, deps: []) => {
+  //   useEffect(() => {
+  //     cb;
+  //   }, [deps]);
+  // };
 
   return (
     <>
@@ -69,7 +88,14 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
               alt="dt"
             />
             <div className="absolute mt-[260px] ml-[420px]">
-              <ProfilePicture size="XL" src={profileUser.user.avatarUrl} alt="profile-Picture" />
+              <ProfilePicture
+                size="XL"
+                src={
+                  profileUser?.user.avatarUrl ??
+                  'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
+                }
+                alt="profile-Picture"
+              />
             </div>
           </div>
           <div className="mt-m">
@@ -140,7 +166,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
     return {
       props: {
         error: message,
-        profileUser: { user: { id: '1', firstName: 'max', lastName: 'fa', userName: 'jf', avatarUrl: 'sdf' } },
       },
     };
   }

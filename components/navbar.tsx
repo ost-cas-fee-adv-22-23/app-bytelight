@@ -19,7 +19,14 @@ export const Navbar = () => {
 
       <div className="w-full flex justify-end items-center gap-x-s">
         <Link href={`/profile/${session?.user.id}`}>
-          <ProfilePicture size="S" src={session?.user.avatarUrl ?? ''} alt="" />
+          <ProfilePicture
+            size="S"
+            src={
+              session?.user.avatarUrl ??
+              'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
+            }
+            alt="profile-avatar"
+          />
         </Link>
 
         <div className="text-white">

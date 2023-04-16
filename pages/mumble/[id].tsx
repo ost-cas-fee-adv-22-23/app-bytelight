@@ -1,13 +1,14 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { MumblePost } from '../../components/mumble-post';
-import { getMumbleById } from '../../services/qwacker';
+import { getPostWithReplies } from '../../services/qwacker';
+import { MumbleDetailView } from '../../components/mumble-detail-view';
 
-const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ mumbleById }) => {
+const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ postWithReplies }) => {
+  console.log(postWithReplies);
   return (
     <div className=" bg-slate-100 h-screen w-screen">
       <div className="flex justify-center pt-xl">
-        <MumblePost post={mumbleById} />
+        <MumbleDetailView postWithReplies={postWithReplies} />
       </div>
     </div>
   );
@@ -25,9 +26,9 @@ export const getServerSideProps = async ({ req, query }: GetServerSidePropsConte
   const id = query.id;
 
   try {
-    const mumbleById = await getMumbleById(id as string, token.accessToken);
+    const postWithReplies = await getPostWithReplies(id as string, token.accessToken);
 
-    return { props: { mumbleById } };
+    return { props: { postWithReplies } };
   } catch (error) {
     console.log('error');
   }

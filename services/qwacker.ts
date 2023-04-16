@@ -1,4 +1,5 @@
 import { decodeTime } from 'ulid';
+import { MumbleWithReplies } from '../models/mumble';
 
 export type Mumble = {
   id: string;
@@ -20,6 +21,18 @@ export type Mumble = {
   type: string;
   replyCount: number;
   createdTimestamp?: number;
+};
+
+export type MumbleReply = {
+  id: string;
+  creator: string;
+  text: string;
+  mediaUrl?: string;
+  mediaType?: string;
+  likeCount: number;
+  likedByUser: boolean;
+  type: string;
+  parentId: string;
 };
 
 export type RawMumble = Omit<Mumble, 'createdTimestamp'>;
@@ -140,4 +153,27 @@ export const getPostsByUser = async (creatorId: string, accessToken?: string) =>
   });
 
   return mumbles.filter((mumble) => mumble.creator === creatorId);
+};
+
+export const getPostWithReplies = async (id: string, accessToken?: string) => {
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+  if (!id) {
+    throw new Error('No post ID');
+  }
+
+  const post = await getMumbleById(id, accessToken);
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/replies`;
+
+  const response = await fetch(url, {
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const replies = (await response.json()) as MumbleReply[];
+
+  return { ...post, replies } as MumbleWithReplies;
 };

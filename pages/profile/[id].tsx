@@ -4,17 +4,19 @@ import {
   Paragraph,
   ProfileIcon,
   ProfilePicture,
+  Switch,
 } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useState } from 'react';
-import { MumblePost } from '../../components/mumble-post';
-import { Mumble, fetchUserById, getPostsByUser } from '../../services/qwacker';
-import { LoadingSpinner } from '../../components/loading-spinner';
+import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
 import { ErrorMessage } from '../../components/error-message';
 import { useAsyncEffect } from '../../hooks/use-async-effect-hook';
+import { AllUserPosts } from '../../components/all-user-posts';
+import Image from 'next/image';
+import { AllLikedPosts } from '../../components/all-liked-posts';
+import { LikedPostsWithUser } from '../../models/mumble';
 
 type PageProps = {
   profileUser?: {
@@ -27,12 +29,14 @@ type PageProps = {
     };
   };
   error?: string;
+  likedPosts?: LikedPostsWithUser;
 };
 // präsi: limitoffset here für loadmore anderst also bei feed
-export default function ProfilePage({ profileUser, error }: PageProps) {
+export default function ProfilePage({ profileUser, error, likedPosts }: PageProps) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userPosts, setUserPosts] = useState<Mumble[]>();
+  const [viewSwitch, setViewSwitch] = useState(true);
   const profileData = profileUser?.user;
 
   useAsyncEffect(async () => {
@@ -89,19 +93,21 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
           sed quis cumque error magni. Deserunt pariatur molestiae incidunt. Omnis deserunt ratione et recusandae quos
           excepturi ut deleniti ut repellat magni.
         </Paragraph>
-        <h1 className="mt-10 mb-4">Posts:</h1>
-        {isLoading ? (
-          <LoadingSpinner imageWidth={100} />
-        ) : userPosts && userPosts.length > 0 ? (
-          <ul className="flex flex-col gap-y-s mb-9 h-full">
-            {userPosts.map((post) => (
-              <li key={post.id}>
-                <MumblePost post={post} />
-              </li>
-            ))}
-          </ul>
+
+        <div className="my-5">
+          <Switch
+            onClick={() => setViewSwitch(!viewSwitch)}
+            isActive={viewSwitch}
+            labelLeft={'Deine Mumbles'}
+            labelRight={'Deine Likes'}
+          />
+        </div>
+        {viewSwitch ? (
+          <AllUserPosts isLoading={isLoading} userPosts={userPosts} />
+        ) : likedPosts && likedPosts?.length > 0 ? (
+          likedPosts?.map((post) => <AllLikedPosts key={post.id} likedPost={post} />)
         ) : (
-          <ErrorMessage text="This user has no posts!" />
+          <ErrorMessage text="User has not liked any posts" />
         )}
       </div>
     </div>
@@ -126,8 +132,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 
   try {
     const profileUser = await fetchUserById({ id: id, accessToken: token.accessToken as string });
+    const likedPosts = await getPostsThatAreLikedByUser(profileUser.user.id, token.accessToken as string);
 
-    return { props: { profileUser } };
+    return { props: { profileUser, likedPosts } };
   } catch (error) {
     let message;
     if (error instanceof Error) {

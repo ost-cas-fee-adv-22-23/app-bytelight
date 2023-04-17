@@ -55,13 +55,15 @@ export const fetchMumbles = async (params?: {
   limit?: number;
   offset?: number;
   newerThanMumbleId?: string;
+  olderThanMumbleId?: string;
   accessToken?: string;
 }) => {
-  const { limit, offset, newerThanMumbleId, accessToken } = params || {};
+  const { limit, offset, newerThanMumbleId, accessToken, olderThanMumbleId } = params || {};
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
     newerThan: newerThanMumbleId || '',
+    olderThan: olderThanMumbleId || '',
   })}`;
 
   const res = await fetch(url, {

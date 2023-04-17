@@ -1,5 +1,5 @@
 import { decodeTime } from 'ulid';
-import { LikedPost, LikedPostsWithUser, LikedPosts, MumbleWithReplies } from '../models/mumble';
+import { LikedPost, LikedPosts, LikedPostsWithUser, MumbleWithReplies } from '../models/mumble';
 
 export type Mumble = {
   id: string;
@@ -214,14 +214,11 @@ export const getPostsThatAreLikedByUser = async (creatorId: string, accessToken?
 
   const data = (await response.json()) as LikedPosts;
 
-  console.log(data.data);
-
   const completePost: LikedPostsWithUser = await Promise.all(
     data.data.map(async (post) => {
       return await transformLikedPost(post, accessToken);
     })
   );
 
-  console.log('comp:', completePost);
   return completePost;
 };

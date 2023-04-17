@@ -36,7 +36,6 @@ export default function ProfilePage({ profileUser, error, likedPosts }: PageProp
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userPosts, setUserPosts] = useState<Mumble[]>();
-  const [likedPostsByUser, setLikedPostsByUser] = useState(likedPosts ?? []);
   const [viewSwitch, setViewSwitch] = useState(true);
   const profileData = profileUser?.user;
 
@@ -106,7 +105,7 @@ export default function ProfilePage({ profileUser, error, likedPosts }: PageProp
         {viewSwitch ? (
           <AllUserPosts isLoading={isLoading} userPosts={userPosts} />
         ) : (
-          <AllLikedPosts likedPosts={likedPostsByUser} />
+          likedPosts?.map((post) => <AllLikedPosts key={post.id} likedPost={post} />)
         )}
       </div>
     </div>

@@ -45,7 +45,9 @@ export type LikedPost = {
   createdTimestamp: number;
 };
 
-export type LikedPostsWithUser = {
+export type LikedPostsWithUser = LikedPostWithUser[];
+
+export type LikedPostWithUser = {
   profile: {
     user: QwackerUserResponse;
   };
@@ -59,4 +61,4 @@ export type LikedPostsWithUser = {
   likedByUser: boolean;
   type: string;
   replyCount: number;
-}[];
+};

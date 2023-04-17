@@ -1,5 +1,5 @@
 import { decodeTime } from 'ulid';
-import { MumbleWithReplies } from '../models/mumble';
+import { LikedPost, LikedPostsWithUser, LikedPosts, MumbleWithReplies } from '../models/mumble';
 
 export type Mumble = {
   id: string;
@@ -106,6 +106,14 @@ const transformMumble = async (mumble: RawMumble, accessToken?: string) => {
   };
 };
 
+const transformLikedPost = async (post: LikedPost, accessToken?: string) => {
+  return {
+    ...post,
+    profile: await fetchUserById({ id: post.creator, accessToken }),
+    createdTimestamp: decodeTime(post.id),
+  };
+};
+
 export const getMumbleById = async (id: string, accessToken?: string) => {
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
 
@@ -157,6 +165,7 @@ export const getPostsByUser = async (creatorId: string, accessToken?: string) =>
   return mumbles.filter((mumble) => mumble.creator === creatorId);
 };
 
+//Get Posts with all replies
 export const getPostWithReplies = async (id: string, accessToken?: string) => {
   if (!accessToken) {
     throw new Error('No access token');
@@ -178,4 +187,41 @@ export const getPostWithReplies = async (id: string, accessToken?: string) => {
   const replies = (await response.json()) as MumbleReply[];
 
   return { ...post, replies } as MumbleWithReplies;
+};
+
+//Get Posts which the user has liked
+export const getPostsThatAreLikedByUser = async (creatorId: string, accessToken?: string) => {
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+  if (!creatorId) {
+    throw new Error('No post ID');
+  }
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`;
+
+  const postData = {
+    likedBy: [creatorId],
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(postData),
+  });
+
+  const data = (await response.json()) as LikedPosts;
+
+  console.log(data.data);
+
+  const completePost: LikedPostsWithUser = await Promise.all(
+    data.data.map(async (post) => {
+      return await transformLikedPost(post, accessToken);
+    })
+  );
+
+  console.log('comp:', completePost);
+  return completePost;
 };

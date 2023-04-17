@@ -104,8 +104,10 @@ export default function ProfilePage({ profileUser, error, likedPosts }: PageProp
         </div>
         {viewSwitch ? (
           <AllUserPosts isLoading={isLoading} userPosts={userPosts} />
-        ) : (
+        ) : likedPosts && likedPosts?.length > 0 ? (
           likedPosts?.map((post) => <AllLikedPosts key={post.id} likedPost={post} />)
+        ) : (
+          <ErrorMessage text="User has not liked any posts" />
         )}
       </div>
     </div>

@@ -1,8 +1,9 @@
-import { Button, Heading2, Heading4 } from '@smartive-education/design-system-component-library-bytelight';
+import { Button, Heading2, Heading4, MumbleIcon } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { LoadingSpinner } from '../components/loading-spinner';
 import { MumblePost } from '../components/mumble-post';
 import { TextareaCard } from '../components/textarea-card';
 import { Mumble, fetchMumbles } from '../services/qwacker';
@@ -20,16 +21,8 @@ export default function Page({
   const [mumbles, setMumbles] = useState(initialMumbles);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
+  const [hasNew, setHasNew] = useState(initialMumbles.length > count);
   const { data: session } = useSession();
-
-  useEffect(() => {
-    // call loadNew every 30 seconds (30,000 milliseconds)
-    const intervalId = setInterval(loadNew, 30000);
-
-    // clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (error) {
     return <div>An error occurred: {error}</div>;
@@ -57,6 +50,8 @@ export default function Page({
     if (count > 0) {
       setLoading(false);
       setMumbles([...newMumbles, ...mumbles]);
+    } else {
+      alert('No new Mumbles');
     }
   };
 
@@ -65,6 +60,14 @@ export default function Page({
       <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
         <Heading2>Willkommen auf Mumble</Heading2>
         <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
+
+        <Button onClick={() => loadNew()} as="button">
+          <div className="flex items-center justify-between">
+            {loading ? <LoadingSpinner imageWidth={100} /> : 'Get newest Mumbles'}
+            <MumbleIcon size="16" />
+          </div>
+        </Button>
+
         <div className="py-s">
           <TextareaCard />
         </div>
@@ -79,7 +82,7 @@ export default function Page({
       {hasMore && (
         <div className="flex justify-center bg-[#F1F5F9] py-l">
           <Button onClick={() => loadMore()} as="button">
-            {loading ? '...' : 'Load more'}
+            {loading ? <LoadingSpinner imageWidth={100} /> : 'Load more'}
           </Button>
         </div>
       )}

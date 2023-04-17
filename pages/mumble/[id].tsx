@@ -1,10 +1,9 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { getPostWithReplies } from '../../services/qwacker';
 import { MumbleDetailView } from '../../components/mumble-detail-view';
+import { getPostWithReplies } from '../../services/qwacker';
 
 const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ postWithReplies }) => {
-  console.log(postWithReplies);
   return (
     <div className=" bg-slate-100 h-screen w-screen">
       <div className="flex justify-center pt-xl">

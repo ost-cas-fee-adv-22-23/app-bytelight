@@ -21,7 +21,6 @@ export default function Page({
   const [mumbles, setMumbles] = useState(initialMumbles);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
-  const [hasNew, setHasNew] = useState(initialMumbles.length > count);
   const { data: session } = useSession();
 
   if (error) {
@@ -60,14 +59,12 @@ export default function Page({
       <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
         <Heading2>Willkommen auf Mumble</Heading2>
         <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
-
         <Button onClick={() => loadNew()} as="button">
           <div className="flex items-center justify-between">
             {loading ? <LoadingSpinner imageWidth={100} /> : 'Get newest Mumbles'}
             <MumbleIcon size="16" />
           </div>
         </Button>
-
         <div className="py-s">
           <TextareaCard />
         </div>

@@ -1,8 +1,8 @@
-import { Button, Heading2, Heading4, MumbleIcon } from '@smartive-education/design-system-component-library-bytelight';
+import { Button, Heading2, Heading4 } from '@smartive-education/design-system-component-library-bytelight';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../components/loading-spinner';
 import { MumblePost } from '../components/mumble-post';
 import { TextareaCard } from '../components/textarea-card';
@@ -21,7 +21,15 @@ export default function Page({
   const [mumbles, setMumbles] = useState(initialMumbles);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
+  const [hasNew, setHasNew] = useState(false);
   const { data: session } = useSession();
+
+  useEffect(() => {
+    const intervalId = setInterval(checkNew, 3000);
+
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mumbles, hasNew]);
 
   if (error) {
     return <div>An error occurred: {error}</div>;
@@ -40,31 +48,41 @@ export default function Page({
   };
 
   const loadNew = async () => {
-    const { count, mumbles: newMumbles } = await fetchMumbles({
-      limit: 10,
+    const { mumbles: newMumbles } = await fetchMumbles({
+      limit: 1000,
       newerThanMumbleId: mumbles[0].id,
       accessToken: session?.accessToken,
     });
 
-    if (count > 0) {
-      setLoading(false);
-      setMumbles([...newMumbles, ...mumbles]);
-    } else {
-      alert('No new Mumbles');
+    setMumbles([...newMumbles, ...mumbles]);
+    setHasNew(false);
+  };
+
+  const checkNew = async () => {
+    if (hasNew) {
+      return;
     }
+    const { mumbles: newMumbles } = await fetchMumbles({
+      limit: 1,
+      newerThanMumbleId: mumbles[0].id,
+      accessToken: session?.accessToken,
+    });
+
+    setHasNew(!!newMumbles.length);
   };
 
   return (
     <div className="bg-slate-100 flex flex-col items-center w-screen">
+      {hasNew && (
+        <div className="sticky top-0 z-10 pt-xs">
+          <Button onClick={() => loadNew()} as="button">
+            Get newest Mumbles
+          </Button>
+        </div>
+      )}
       <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
         <Heading2>Willkommen auf Mumble</Heading2>
         <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
-        <Button onClick={() => loadNew()} as="button">
-          <div className="flex items-center justify-between">
-            {loading ? <LoadingSpinner imageWidth={100} /> : 'Get newest Mumbles'}
-            <MumbleIcon size="16" />
-          </div>
-        </Button>
         <div className="py-s">
           <TextareaCard />
         </div>

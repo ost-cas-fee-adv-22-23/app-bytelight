@@ -9,14 +9,14 @@ import {
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
+import { AllLikedPosts } from '../../components/all-liked-posts';
+import { AllUserPosts } from '../../components/all-user-posts';
 import { ErrorMessage } from '../../components/error-message';
 import { useAsyncEffect } from '../../hooks/use-async-effect-hook';
-import { AllUserPosts } from '../../components/all-user-posts';
-import Image from 'next/image';
-import { AllLikedPosts } from '../../components/all-liked-posts';
 import { LikedPostsWithUser } from '../../models/mumble';
+import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
 
 type PageProps = {
   profileUser?: {
@@ -31,7 +31,7 @@ type PageProps = {
   error?: string;
   likedPosts?: LikedPostsWithUser;
 };
-// präsi: limitoffset here für loadmore anderst also bei feed
+
 export default function ProfilePage({ profileUser, error, likedPosts }: PageProps) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);

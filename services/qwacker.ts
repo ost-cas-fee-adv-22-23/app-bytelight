@@ -222,3 +222,37 @@ export const getPostsThatAreLikedByUser = async (creatorId: string, accessToken?
 
   return completePost;
 };
+
+export const likePost = async (id: string, accessToken?: string) => {
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/likes`;
+
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response;
+};
+
+export const dislikePost = async (id: string, accessToken?: string) => {
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/likes`;
+
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response;
+};

@@ -7,14 +7,14 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
-import { useSession } from 'next-auth/react';
-import { LoadingSpinner } from './loading-spinner';
+import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
+import { LoadingSpinner } from './loading-spinner';
 
 type Props = {
   reply: MumbleReply;

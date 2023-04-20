@@ -11,19 +11,33 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { Mumble } from '../services/qwacker';
+import { Mumble, dislikePost, likePost } from '../services/qwacker';
 
 export type Props = {
   post: Mumble;
 };
 
 export const MumblePost: FC<Props> = ({ post }) => {
-  const [likes, setLikes] = useState(post.likeCount);
+  const [isLiked] = useState(post.likedByUser);
   const dateFormat = new Date(post.createdTimestamp ?? '1111');
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const { data: session } = useSession();
+
+  const token = session?.accessToken;
+
+  const handleLikes = async () => {
+    if (isLiked) {
+      const response = await dislikePost(post.id, token);
+      return response;
+    } else {
+      const response = await likePost(post.id, token);
+      return response;
+    }
+  };
 
   return (
     <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
@@ -73,11 +87,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
           hasMyLike={post.likeCount > 0}
           count={post.likeCount}
           onClick={() => {
-            if (post.likeCount > 0) {
-              setLikes(likes - 1);
-              return;
-            }
-            setLikes(likes + 1);
+            handleLikes();
           }}
         />
         <ShareButton label="Copy Link" labelTransition="Copied!" link={post.text} />

@@ -3,7 +3,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../components/loading-spinner';
 import { MumblePost } from '../components/mumble-post';
@@ -24,8 +23,6 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialMumbles.length < count);
   const [hasNew, setHasNew] = useState(false);
-  const router = useRouter();
-
   const { data: session } = useSession();
 
   const token = session?.accessToken;

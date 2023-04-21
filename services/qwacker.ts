@@ -1,5 +1,5 @@
-import { decodeTime } from 'ulid';
-import { LikedPost, LikedPosts, LikedPostsWithUser, MumbleWithReplies } from '../models/mumble';
+import { LikedPosts, LikedPostsWithUser, MumbleWithReplies } from '../models/mumble';
+import { getHeaders, transformLikedPost, transformMumble } from '../helper';
 
 export type Mumble = {
   id: string;
@@ -50,11 +50,6 @@ export type QwackerUserResponse = {
   avatarUrl: string;
 };
 
-const getHeaders = (accessToken: string | undefined) => {
-  const headers = { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` };
-  return headers;
-};
-
 //get Posts
 export const fetchMumbles = async (params?: {
   limit?: number;
@@ -95,22 +90,6 @@ export const fetchUserById = async ({ id, accessToken }: { id: string; accessTok
   const user = (await response.json()) as QwackerUserResponse;
 
   return { user };
-};
-
-const transformMumble = async (mumble: RawMumble, accessToken?: string) => {
-  return {
-    ...mumble,
-    profile: await fetchUserById({ id: mumble.creator, accessToken }),
-    createdTimestamp: decodeTime(mumble.id),
-  };
-};
-
-const transformLikedPost = async (post: LikedPost, accessToken?: string) => {
-  return {
-    ...post,
-    profile: await fetchUserById({ id: post.creator, accessToken }),
-    createdTimestamp: decodeTime(post.id),
-  };
 };
 
 export const getMumbleById = async (id: string, accessToken?: string) => {

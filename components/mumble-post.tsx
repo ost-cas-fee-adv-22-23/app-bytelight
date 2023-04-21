@@ -11,19 +11,34 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { Mumble } from '../services/qwacker';
+import { fallBackImgUrl } from '../helper';
+import { Mumble, updatePostLike } from '../services/qwacker';
+import { ErrorMessage } from './error-message';
 
 export type Props = {
   post: Mumble;
 };
 
 export const MumblePost: FC<Props> = ({ post }) => {
-  const [likes, setLikes] = useState(post.likeCount);
+  const [isLiked] = useState(post.likedByUser);
+  const [error, setError] = useState(false);
   const dateFormat = new Date(post.createdTimestamp ?? '1111');
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+
+  const handleLikes = async () => {
+    try {
+      await updatePostLike(isLiked ? 'unlike' : 'like', post.id, token);
+      window.location.reload();
+    } catch {
+      setError(true);
+    }
+  };
 
   return (
     <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
@@ -31,11 +46,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
         <div className="absolute -left-8 top-5">
           <ProfilePicture
             size="M"
-            src={
-              post.profile.user.avatarUrl
-                ? post.profile.user.avatarUrl
-                : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-            }
+            src={post.profile.user.avatarUrl ? post.profile.user.avatarUrl : fallBackImgUrl}
             alt="profile-picture"
           />
         </div>
@@ -55,9 +66,10 @@ export const MumblePost: FC<Props> = ({ post }) => {
       {post.mediaUrl && (
         <div className="flex mt-s">
           {/* eslint-disable-next-line react/forbid-component-props */}
-          <Image width={100} height={100} src={post.mediaUrl} className="rounded-xl w-full h-full" alt="pic profile" />
+          <Image width={100} height={100} src={post.mediaUrl} className="rounded-xl w-full h-full" alt="profile picture" />
         </div>
       )}
+      {error && <ErrorMessage text="Something went wrong" />}
       <div className="flex justify-start gap-x-l mt-s">
         <CommentAction
           onClick={function (): void {
@@ -73,11 +85,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
           hasMyLike={post.likeCount > 0}
           count={post.likeCount}
           onClick={() => {
-            if (post.likeCount > 0) {
-              setLikes(likes - 1);
-              return;
-            }
-            setLikes(likes + 1);
+            handleLikes();
           }}
         />
         <ShareButton label="Copy Link" labelTransition="Copied!" link={post.text} />

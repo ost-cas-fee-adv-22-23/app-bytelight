@@ -10,7 +10,6 @@ export default function Home() {
       <Head>
         <title>Login</title>
       </Head>
-
       <main>
         <div className="h-screen w-screen grid-rows-2">
           <div className="flex">
@@ -35,7 +34,7 @@ export default function Home() {
                   <Button
                     as="button"
                     onClick={() => {
-                      signIn('zitadel', { callbackUrl: '/feed' });
+                      signIn('zitadel', { callbackUrl: '/' });
                     }}
                   >
                     Login

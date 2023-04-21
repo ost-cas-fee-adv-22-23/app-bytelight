@@ -50,6 +50,11 @@ export type QwackerUserResponse = {
   avatarUrl: string;
 };
 
+const getHeaders = (accessToken: string | undefined) => {
+  const headers = { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` };
+  return headers;
+};
+
 //get Posts
 export const fetchMumbles = async (params?: {
   limit?: number;
@@ -66,14 +71,11 @@ export const fetchMumbles = async (params?: {
     olderThan: olderThanMumbleId || '',
   })}`;
 
-  const res = await fetch(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const response = await fetch(url, {
+    headers: getHeaders(accessToken),
   });
-  const { count, data } = (await res.json()) as QwackerMumbleResponse;
 
+  const { count, data } = (await response.json()) as QwackerMumbleResponse;
   const mumbles = await Promise.all(data.map(async (mumble) => await transformMumble(mumble, accessToken)));
 
   return {
@@ -86,14 +88,11 @@ export const fetchMumbles = async (params?: {
 export const fetchUserById = async ({ id, accessToken }: { id: string; accessToken?: string }) => {
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users/${id}`;
 
-  const res = await fetch(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const response = await fetch(url, {
+    headers: getHeaders(accessToken),
   });
 
-  const user = (await res.json()) as QwackerUserResponse;
+  const user = (await response.json()) as QwackerUserResponse;
 
   return { user };
 };
@@ -117,13 +116,11 @@ const transformLikedPost = async (post: LikedPost, accessToken?: string) => {
 export const getMumbleById = async (id: string, accessToken?: string) => {
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
 
-  const res = await fetch(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const response = await fetch(url, {
+    headers: getHeaders(accessToken),
   });
-  const mumble = (await res.json()) as Mumble;
+
+  const mumble = (await response.json()) as Mumble;
 
   return await transformMumble(mumble, accessToken);
 };
@@ -139,22 +136,16 @@ export const postMumble = async (text: string, file: File | undefined, accessTok
     formData.append('image', file);
   }
 
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error('Something was not okay');
-    }
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`;
+  const response = await fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-    return transformMumble(await response.json());
-  } catch (error) {
-    throw new Error(error instanceof Error ? error.message : 'Could not post mumble');
-  }
+  return transformMumble(await response.json());
 };
 
 export const getPostsByUser = async (creatorId: string, accessToken?: string) => {
@@ -165,7 +156,6 @@ export const getPostsByUser = async (creatorId: string, accessToken?: string) =>
   return mumbles.filter((mumble) => mumble.creator === creatorId);
 };
 
-//Get Posts with all replies
 export const getPostWithReplies = async (id: string, accessToken?: string) => {
   if (!accessToken) {
     throw new Error('No access token');
@@ -178,10 +168,7 @@ export const getPostWithReplies = async (id: string, accessToken?: string) => {
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/replies`;
 
   const response = await fetch(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
+    headers: getHeaders(accessToken),
   });
 
   const replies = (await response.json()) as MumbleReply[];
@@ -197,18 +184,15 @@ export const getPostsThatAreLikedByUser = async (creatorId: string, accessToken?
   if (!creatorId) {
     throw new Error('No post ID');
   }
-  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`;
 
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`;
   const postData = {
     likedBy: [creatorId],
   };
 
   const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
+    headers: getHeaders(accessToken),
     body: JSON.stringify(postData),
   });
 
@@ -221,4 +205,24 @@ export const getPostsThatAreLikedByUser = async (creatorId: string, accessToken?
   );
 
   return completePost;
+};
+export const updatePostLike = async (action: 'like' | 'unlike', mumbleId: string, accessToken?: string) => {
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+
+  if (!mumbleId) {
+    throw new Error('No Mumble ID available');
+  }
+
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${mumbleId}/likes`;
+
+  const response = await fetch(url, {
+    method: action === 'like' ? 'PUT' : 'DELETE',
+    headers: getHeaders(accessToken),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
 };

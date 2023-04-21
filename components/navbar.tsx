@@ -7,26 +7,23 @@ import {
 } from '@smartive-education/design-system-component-library-bytelight';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { fallBackImgUrl } from '../helper';
 
 export const Navbar = () => {
   const { data: session } = useSession();
 
+  const user = session?.user.id;
+  const avatarUrl = session?.user.avatarUrl;
+
   return (
     <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
-      <Link href={'/feed'}>
+      <Link href={'/'}>
         <NavbarMumble />
       </Link>
 
       <div className="w-full flex justify-end items-center gap-x-s">
-        <Link href={`/profile/${session?.user.id}`}>
-          <ProfilePicture
-            size="S"
-            src={
-              session?.user.avatarUrl ??
-              'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-            }
-            alt="profile-avatar"
-          />
+        <Link href={`/profile/${user}`}>
+          <ProfilePicture size="S" src={avatarUrl ?? fallBackImgUrl} alt="profile-avatar" />
         </Link>
 
         <div className="text-white">

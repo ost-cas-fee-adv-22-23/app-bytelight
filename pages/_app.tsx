@@ -12,7 +12,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <Component {...pageProps} />
       ) : (
         <>
-          <Navbar /> <Component {...pageProps} />
+          <Navbar />
+          <Component {...pageProps} />
         </>
       )}
     </SessionProvider>

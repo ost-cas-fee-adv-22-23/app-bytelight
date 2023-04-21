@@ -7,14 +7,15 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
+import { fallBackImgUrl } from '../helper';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
-import { useSession } from 'next-auth/react';
-import { LoadingSpinner } from './loading-spinner';
+import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
+import { LoadingSpinner } from './loading-spinner';
 
 type Props = {
   reply: MumbleReply;
@@ -26,9 +27,11 @@ export const MumbleReplyComments: FC<Props> = ({ reply }) => {
   const [replyer, setReplayer] = useState<QwackerUserResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const token = session?.accessToken;
+
   useAsyncEffect(async () => {
     setIsLoading(true);
-    const userData = await fetchUserById({ id: reply.creator, accessToken: session?.accessToken as string });
+    const userData = await fetchUserById({ id: reply.creator, accessToken: token });
     setReplayer(userData.user);
     setIsLoading(false);
   }, [reply.creator]);
@@ -45,15 +48,7 @@ export const MumbleReplyComments: FC<Props> = ({ reply }) => {
     <div className="flex flex-col mt-14 border-b-4 border-slate-100">
       {replyer ? (
         <div className="flex mb-s">
-          <ProfilePicture
-            size="S"
-            src={
-              replyer.avatarUrl
-                ? replyer.avatarUrl
-                : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-            }
-            alt="profile-Picture"
-          />
+          <ProfilePicture size="S" src={replyer.avatarUrl ? replyer.avatarUrl : fallBackImgUrl} alt="profile-Picture" />
           <div className="ml-xs">
             <Label variant="M">{`${replyer.firstName} ${replyer.lastName}`}</Label>
             <div className="flex gap-x-s">

@@ -10,7 +10,6 @@ export default function Home() {
       <Head>
         <title>Login</title>
       </Head>
-
       <main>
         <div className="h-screen w-screen grid-rows-2">
           <div className="flex">

@@ -2,6 +2,7 @@ import { Button, Heading2, Heading4 } from '@smartive-education/design-system-co
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../components/loading-spinner';
 import { MumblePost } from '../components/mumble-post';
@@ -24,6 +25,8 @@ export default function Page({
   const [hasNew, setHasNew] = useState(false);
   const { data: session } = useSession();
 
+  const token = session?.accessToken;
+
   useEffect(() => {
     const intervalId = setInterval(checkNew, 3000);
 
@@ -39,7 +42,7 @@ export default function Page({
     const { count, mumbles: oldMumbles } = await fetchMumbles({
       limit: 10,
       olderThanMumbleId: mumbles[mumbles.length - 1].id,
-      accessToken: session?.accessToken,
+      accessToken: token,
     });
 
     setLoading(false);
@@ -51,7 +54,7 @@ export default function Page({
     const { mumbles: newMumbles } = await fetchMumbles({
       limit: 1000,
       newerThanMumbleId: mumbles[0].id,
-      accessToken: session?.accessToken,
+      accessToken: token,
     });
 
     setMumbles([...newMumbles, ...mumbles]);
@@ -65,43 +68,48 @@ export default function Page({
     const { mumbles: newMumbles } = await fetchMumbles({
       limit: 1,
       newerThanMumbleId: mumbles[0].id,
-      accessToken: session?.accessToken,
+      accessToken: token,
     });
 
     setHasNew(!!newMumbles.length);
   };
 
   return (
-    <div className="bg-slate-100 flex flex-col items-center w-screen">
-      {hasNew && (
-        <div className="sticky top-0 z-10 pt-xs">
-          <Button onClick={() => loadNew()} as="button">
-            Get newest Mumbles
-          </Button>
+    <>
+      <Head>
+        <title>Feed</title>
+      </Head>
+      <div className="bg-slate-100 flex flex-col items-center w-screen">
+        {hasNew && (
+          <div className="sticky top-0 z-10 pt-xs">
+            <Button onClick={() => loadNew()} as="button">
+              Get newest Mumbles
+            </Button>
+          </div>
+        )}
+        <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
+          <Heading2>Willkommen auf Mumble</Heading2>
+          <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
+          <div className="py-s">
+            <TextareaCard />
+          </div>
         </div>
-      )}
-      <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
-        <Heading2>Willkommen auf Mumble</Heading2>
-        <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
-        <div className="py-s">
-          <TextareaCard />
-        </div>
+        <ul className="flex flex-col gap-y-s">
+          {mumbles.map((mumble) => (
+            <li key={mumble.id}>
+              <MumblePost post={mumble} />
+            </li>
+          ))}
+        </ul>
+        {hasMore && (
+          <div className="flex justify-center bg-[#F1F5F9] py-l">
+            <Button onClick={() => loadMore()} as="button">
+              {loading ? <LoadingSpinner imageWidth={100} /> : 'Load more'}
+            </Button>
+          </div>
+        )}
       </div>
-      <ul className="flex flex-col gap-y-s">
-        {mumbles.map((mumble) => (
-          <li key={mumble.id}>
-            <MumblePost post={mumble} />
-          </li>
-        ))}
-      </ul>
-      {hasMore && (
-        <div className="flex justify-center bg-[#F1F5F9] py-l">
-          <Button onClick={() => loadMore()} as="button">
-            {loading ? <LoadingSpinner imageWidth={100} /> : 'Load more'}
-          </Button>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req }) => {
@@ -112,7 +120,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req })
   }
 
   try {
-    const { count, mumbles } = await fetchMumbles({ limit: 10, accessToken: token.accessToken as string });
+    const { count, mumbles } = await fetchMumbles({ limit: 10, accessToken: token.accessToken });
 
     return { props: { count, mumbles } };
   } catch (error) {

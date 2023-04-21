@@ -10,7 +10,9 @@ import {
 } from '@smartive-education/design-system-component-library-bytelight';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useState } from 'react';
+import { fallBackImgUrl } from '../helper';
 import { postMumble } from '../services/qwacker';
+import { ErrorMessage } from './error-message';
 import { UploadModal } from './upload-modal';
 
 export const TextareaCard = () => {
@@ -18,12 +20,20 @@ export const TextareaCard = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasFile, setHasFile] = useState<File | undefined>();
   const [hasPreview, setHasPreview] = useState<string | undefined>('');
+  const [error, setError] = useState(false);
   const { data: session } = useSession();
 
+  const token = session?.accessToken;
+  const avatarUrl = session?.user.avatarUrl;
+
   const handleSubmit = async () => {
-    const res = await postMumble(inputValue, hasFile, session?.accessToken);
-    window.location.reload();
-    return res;
+    try {
+      const response = await postMumble(inputValue, hasFile, token);
+      window.location.reload();
+      return response;
+    } catch {
+      setError(true);
+    }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,14 +53,7 @@ export const TextareaCard = () => {
     <>
       <div className="bg-white w-[680px]  px-xl py-l rounded-2xl relative">
         <div className="absolute -left-8 top-5">
-          <ProfilePicture
-            size="M"
-            src={
-              session?.user.avatarUrl ??
-              'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-            }
-            alt="profile-picture"
-          />
+          <ProfilePicture size="M" src={avatarUrl ?? fallBackImgUrl} alt="profile-picture" />
         </div>
         <div className="pb-l flex w-full justify-between">
           <Heading4>Hey was gibts neues?</Heading4>
@@ -77,6 +80,7 @@ export const TextareaCard = () => {
             </div>
           </div>
         )}
+        {error && <ErrorMessage text="Couldn't mumble, sorry" />}
         <div className="flex gap-x-s pt-s">
           <Button as="button" variant="secondary" onClick={() => setIsOpen(true)}>
             <div className="flex items-center justify-center gap-x-xs">

@@ -1,5 +1,3 @@
-import { FC, useState } from 'react';
-import { MumbleWithReplies } from '../models/mumble';
 import {
   ClockIcon,
   CommentAction,
@@ -13,8 +11,11 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { FC, useState } from 'react';
+import { fallBackImgUrl } from '../helper';
+import { MumbleWithReplies } from '../models/mumble';
 import { MumbleReplyComments } from './mumble-reply-comments';
 
 type Props = {
@@ -32,11 +33,7 @@ export const MumbleDetailView: FC<Props> = ({ postWithReplies }) => {
         <div className="absolute -left-8 top-5">
           <ProfilePicture
             size="M"
-            src={
-              postWithReplies.profile.user.avatarUrl
-                ? postWithReplies.profile.user.avatarUrl
-                : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-            }
+            src={postWithReplies.profile.user.avatarUrl ? postWithReplies.profile.user.avatarUrl : fallBackImgUrl}
             alt="profile-picture"
           />
         </div>

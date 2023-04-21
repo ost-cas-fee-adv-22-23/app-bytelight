@@ -18,6 +18,7 @@ import { ErrorMessage } from '../../components/error-message';
 import { useAsyncEffect } from '../../hooks/use-async-effect-hook';
 import { LikedPostsWithUser } from '../../models/mumble';
 import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
+import { fallBackImgUrl } from '../../helper';
 
 type PageProps = {
   profileUser?: {
@@ -30,23 +31,27 @@ type PageProps = {
     };
   };
   error?: string;
-  likedPosts?: LikedPostsWithUser;
 };
 
-export default function ProfilePage({ profileUser, error, likedPosts }: PageProps) {
+export default function ProfilePage({ profileUser, error }: PageProps) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userPosts, setUserPosts] = useState<Mumble[]>();
+  const [likedPosts, setLikedPosts] = useState<LikedPostsWithUser>();
   const [viewSwitch, setViewSwitch] = useState(true);
   const profileData = profileUser?.user;
 
   useAsyncEffect(async () => {
     setUserPosts([]);
+    setLikedPosts([]);
     setIsLoading(true);
+
     if (error || !profileData) return;
     try {
       const posts = await getPostsByUser(profileData.id, session?.accessToken);
+      const likedPostsRes = await getPostsThatAreLikedByUser(profileUser.user.id, session?.accessToken);
       setUserPosts(posts);
+      setLikedPosts(likedPostsRes);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -76,11 +81,7 @@ export default function ProfilePage({ profileUser, error, likedPosts }: PageProp
             <div className="absolute mt-[260px] ml-[420px]">
               <ProfilePicture
                 size="XL"
-                src={
-                  profileUser.user.avatarUrl
-                    ? profileUser.user.avatarUrl
-                    : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'
-                }
+                src={profileUser.user.avatarUrl ? profileUser.user.avatarUrl : fallBackImgUrl}
                 alt="profile-Picture"
               />
             </div>
@@ -138,9 +139,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 
   try {
     const profileUser = await fetchUserById({ id: id, accessToken: token.accessToken as string });
-    const likedPosts = await getPostsThatAreLikedByUser(profileUser.user.id, token.accessToken as string);
 
-    return { props: { profileUser, likedPosts } };
+    return { props: { profileUser } };
   } catch (error) {
     let message;
     if (error instanceof Error) {

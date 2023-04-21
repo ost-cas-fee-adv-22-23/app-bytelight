@@ -23,6 +23,8 @@ type Props = {
 
 export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
   const [likes, setLikes] = useState(likedPost.likeCount);
+  const dateFormat = new Date(likedPost.createdTimestamp ?? '1111');
+  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
 
   return (
     <div>
@@ -43,7 +45,7 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
                   <IconLabel variant="violet" value={likedPost.profile.user.userName} icon={<ProfileIcon size="12" />} />
                 </Link>
                 <Link href={`/mumble/${likedPost.id}`}>
-                  <IconLabel variant="gray" value={'No date'} icon={<ClockIcon size="12" />} />
+                  <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
                 </Link>
               </div>
             </div>

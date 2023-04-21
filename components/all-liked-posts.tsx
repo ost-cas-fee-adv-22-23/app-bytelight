@@ -31,12 +31,14 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
       <>
         <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative my-4">
           <div className="flex mb-s">
-            <div className="absolute -left-8 top-5">
-              <ProfilePicture
-                size="M"
-                src={likedPost.profile.user.avatarUrl ? likedPost.profile.user.avatarUrl : fallBackImgUrl}
-                alt="profile-picture"
-              />
+            <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
+              <Link href={`/profile/${likedPost.creator}`}>
+                <ProfilePicture
+                  size="M"
+                  src={likedPost.profile.user.avatarUrl ? likedPost.profile.user.avatarUrl : fallBackImgUrl}
+                  alt="profile-picture"
+                />
+              </Link>
             </div>
             <div>
               <Label variant="M">{`${likedPost.profile.user.firstName} ${likedPost.profile.user.lastName}`}</Label>
@@ -86,7 +88,7 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
                 setLikes(likes + 1);
               }}
             />
-            <ShareButton label="Copy Link" labelTransition="Copied!" link={likedPost.text} />
+            <ShareButton label="Copy Link" labelTransition="Copied!" link={`localhost:3000/mumble/${likedPost.id}`} />
           </div>
         </div>
       </>

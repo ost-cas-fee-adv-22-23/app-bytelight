@@ -1,6 +1,7 @@
+import { SetStateAction } from 'react';
 import { decodeTime } from 'ulid';
 import { LikedPost } from '../models/mumble';
-import { RawMumble, fetchUserById } from '../services/qwacker';
+import { RawMumble, fetchUserById, updatePostLike } from '../services/qwacker';
 
 export const getHeaders = (accessToken: string | undefined) => {
   const headers = { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` };
@@ -21,4 +22,18 @@ export const transformLikedPost = async (post: LikedPost, accessToken?: string) 
     profile: await fetchUserById({ id: post.creator, accessToken }),
     createdTimestamp: decodeTime(post.id),
   };
+};
+
+export const handleLikes = (
+  isLiked: boolean,
+  postId: string,
+  token: string | undefined,
+  setError: (value: SetStateAction<boolean>) => void
+) => {
+  try {
+    updatePostLike(isLiked ? 'unlike' : 'like', postId, token);
+    window.location.reload();
+  } catch {
+    setError(true);
+  }
 };

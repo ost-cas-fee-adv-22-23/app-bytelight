@@ -17,15 +17,17 @@ export const Navbar = () => {
 
   return (
     <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
-      <Link href={'/'}>
-        <NavbarMumble />
-      </Link>
-
-      <div className="w-full flex justify-end items-center gap-x-s">
-        <Link href={`/profile/${user}`}>
-          <ProfilePicture size="S" src={avatarUrl ?? fallBackImgUrl} alt="profile-avatar" />
+      <span className="hover:scale-105 transition ease-in-out">
+        <Link href={'/'}>
+          <NavbarMumble />
         </Link>
-
+      </span>
+      <div className="w-full flex justify-end items-center gap-x-s">
+        <div className="hover:scale-105 transition ease-in-out">
+          <Link href={`/profile/${user}`}>
+            <ProfilePicture size="S" src={avatarUrl ?? fallBackImgUrl} alt="profile-avatar" />
+          </Link>
+        </div>
         <div className="text-white">
           <NavbarButton label="Settings" onClick={() => alert('Hoi')}>
             <div className="group-hover:rotate-180 transition duration-1000 transform-none text-white">

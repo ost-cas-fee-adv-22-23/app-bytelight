@@ -17,7 +17,7 @@ export const Navbar = () => {
 
   return (
     <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
-      <Link href={'/feed'}>
+      <Link href={'/'}>
         <NavbarMumble />
       </Link>
 

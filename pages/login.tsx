@@ -34,7 +34,7 @@ export default function Home() {
                   <Button
                     as="button"
                     onClick={() => {
-                      signIn('zitadel', { callbackUrl: '/feed' });
+                      signIn('zitadel', { callbackUrl: '/' });
                     }}
                   >
                     Login

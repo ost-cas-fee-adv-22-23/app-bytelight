@@ -2,7 +2,9 @@ import {
   Button,
   ButtonRound,
   CancelIcon,
-  Heading4,
+  IconLabel,
+  Label,
+  ProfileIcon,
   ProfilePicture,
   SendIcon,
   Textarea,
@@ -10,13 +12,17 @@ import {
 } from '@smartive-education/design-system-component-library-bytelight';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { fallBackImgUrl } from '../helper';
-import { postMumble } from '../services/qwacker';
+import { postComment } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
 import { UploadModal } from './upload-modal';
 
-export const TextareaCard = () => {
+type Props = {
+  postId: string;
+};
+
+export const ReplyTextarea: FC<Props> = ({ postId }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasFile, setHasFile] = useState<File | undefined>();
@@ -28,7 +34,7 @@ export const TextareaCard = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await postMumble(inputValue, hasFile, token);
+      const response = await postComment(postId, inputValue, hasFile, token);
       window.location.reload();
       return response;
     } catch {
@@ -51,14 +57,22 @@ export const TextareaCard = () => {
 
   return (
     <>
-      <div className="bg-white px-xl py-l rounded-2xl relative">
-        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
-          <Link href={`/profile/${session?.user.id}`}>
-            <ProfilePicture size="M" src={avatarUrl ?? fallBackImgUrl} alt="profile-picture" />
-          </Link>
+      <div className=" bg-white  py-l rounded-2xl ">
+        <div className="flex items-center gap-xs mb-s">
+          <span className="hover:scale-105 transition ease-in-out">
+            <Link href={`/profile/${session?.user.id}`}>
+              <ProfilePicture size="S" src={avatarUrl ?? fallBackImgUrl} alt="profile-picture" />
+            </Link>
+          </span>
+          <div className="flex flex-col">
+            <Label variant="S">{session?.user.firstname}</Label>
+            <Link href={`/profile/${session?.user.id}`}>
+              <IconLabel variant="violet" value={session?.user.username ?? ''} icon={<ProfileIcon size="12" />} />
+            </Link>
+          </div>
         </div>
-        <div className="pb-l flex w-full justify-between">
-          <Heading4>Hey was gibts neues?</Heading4>
+        <div></div>
+        <div className=" flex w-full justify-between">
           {hasPreview && (
             <div>
               <ButtonRound

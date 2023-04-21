@@ -1,8 +1,5 @@
 import {
   ClockIcon,
-  CommentAction,
-  CommentEmptyIcon,
-  CommentFilledIcon,
   IconLabel,
   Label,
   LikeAction,
@@ -11,31 +8,39 @@ import {
   ProfilePicture,
   ShareButton,
 } from '@smartive-education/design-system-component-library-bytelight';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl } from '../helper';
+import { fallBackImgUrl, handleLikes } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
-import { MumbleReplyComments } from './mumble-reply-comments';
+import { ErrorMessage } from './error-message';
+import { MumbleReplies } from './mumble-replies';
+import { ReplyTextarea } from './reply-textarea';
 
 type Props = {
   postWithReplies: MumbleWithReplies;
 };
 
-export const MumbleDetailView: FC<Props> = ({ postWithReplies }) => {
-  const [likes, setLikes] = useState(postWithReplies.likeCount);
+export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   const dateFormat = new Date(postWithReplies.createdTimestamp ?? '1111');
   const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const [isLiked] = useState(postWithReplies.likedByUser);
+  const [error, setError] = useState(false);
+  const { data: session } = useSession();
+  const token = session?.accessToken;
 
   return (
     <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
       <div className="flex mb-s">
-        <div className="absolute -left-8 top-5">
-          <ProfilePicture
-            size="M"
-            src={postWithReplies.profile.user.avatarUrl ? postWithReplies.profile.user.avatarUrl : fallBackImgUrl}
-            alt="profile-picture"
-          />
+        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
+          <Link href={`/profile/${postWithReplies.creator}`}>
+            <ProfilePicture
+              size="M"
+              src={postWithReplies.profile.user.avatarUrl ? postWithReplies.profile.user.avatarUrl : fallBackImgUrl}
+              alt="profile picture"
+            />
+          </Link>
         </div>
         <div>
           <Label variant="M">{`${postWithReplies.profile.user.firstName} ${postWithReplies.profile.user.lastName}`}</Label>
@@ -57,37 +62,22 @@ export const MumbleDetailView: FC<Props> = ({ postWithReplies }) => {
             src={postWithReplies.mediaUrl}
             // eslint-disable-next-line react/forbid-component-props
             className="rounded-xl w-full h-full"
-            alt="pic profile"
+            alt="profile picture"
           />
         </div>
       )}
+      {error && <ErrorMessage text="Something went wrong" />}
       <div className="flex justify-start gap-x-l mt-s">
-        <CommentAction
-          onClick={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-          label={`${postWithReplies.replyCount} Coms`}
-          // eslint-disable-next-line react/jsx-no-undef
-          icon={postWithReplies.replyCount === 0 ? <CommentEmptyIcon size="16px" /> : <CommentFilledIcon size="16px" />}
-          count={postWithReplies.replyCount}
-          // eslint-disable-next-line react/forbid-component-props
-          className={''}
-        />
         <LikeAction
           hasMyLike={postWithReplies.likeCount > 0}
           count={postWithReplies.likeCount}
-          onClick={() => {
-            if (postWithReplies.likeCount > 0) {
-              setLikes(likes - 1);
-              return;
-            }
-            setLikes(likes + 1);
-          }}
+          onClick={() => handleLikes(isLiked, postWithReplies.id, token, setError)}
         />
-        <ShareButton label="Copy Link" labelTransition="Copied!" link={postWithReplies.text} />
+        <ShareButton label="Copy Link" labelTransition="Copied!" link={`localhost:3000/mumble/${postWithReplies.id}`} />
       </div>
+      <ReplyTextarea postId={postWithReplies.id} />
       {postWithReplies.replies.map((reply) => (
-        <MumbleReplyComments reply={reply} key={reply.id} />
+        <MumbleReplies reply={reply} key={reply.id} />
       ))}
     </div>
   );

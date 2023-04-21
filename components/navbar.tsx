@@ -22,7 +22,6 @@ export const Navbar = () => {
           <NavbarMumble />
         </Link>
       </span>
-
       <div className="w-full flex justify-end items-center gap-x-s">
         <div className="hover:scale-105 transition ease-in-out">
           <Link href={`/profile/${user}`}>

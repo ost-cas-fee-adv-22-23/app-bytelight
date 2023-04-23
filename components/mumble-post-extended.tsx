@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, handleLikes } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
@@ -31,9 +31,9 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   const token = session?.accessToken;
 
   return (
-    <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
+    <div className="bg-white w-[480px] md:w-[680px] px-xl py-8 rounded-2xl relative">
       <div className="flex mb-s">
-        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
+        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out hidden md:block">
           <Link href={`/profile/${postWithReplies.creator}`}>
             <ProfilePicture
               size="M"
@@ -73,7 +73,7 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
           count={postWithReplies.likeCount}
           onClick={() => handleLikes(isLiked, postWithReplies.id, token, setError)}
         />
-        <ShareButton label="Copy Link" labelTransition="Copied!" link={`localhost:3000/mumble/${postWithReplies.id}`} />
+        <ShareButton label="Copy Link" labelTransition="Copied!" link={`${getCurrentUrl(url)}`} />
       </div>
       <ReplyTextarea postId={postWithReplies.id} />
       {postWithReplies.replies.map((reply) => (

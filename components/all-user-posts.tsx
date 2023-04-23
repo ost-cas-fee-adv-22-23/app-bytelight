@@ -1,8 +1,8 @@
-import { LoadingSpinner } from './loading-spinner';
-import { MumblePost } from './mumble-post';
-import { ErrorMessage } from './error-message';
 import { FC } from 'react';
 import { Mumble } from '../services/qwacker';
+import { ErrorMessage } from './error-message';
+import { LoadingSpinner } from './loading-spinner';
+import { MumblePost } from './mumble-post';
 
 type Props = {
   isLoading: boolean;
@@ -15,7 +15,7 @@ export const AllUserPosts: FC<Props> = ({ isLoading, userPosts }) => {
       {isLoading ? (
         <LoadingSpinner imageWidth={100} />
       ) : userPosts && userPosts.length > 0 ? (
-        <ul className="flex flex-col gap-y-s mb-9 h-full">
+        <ul className="flex flex-col gap-y-s">
           {userPosts.map((post) => (
             <li key={post.id}>
               <MumblePost post={post} />

@@ -16,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, handleLikes } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
 import { Mumble } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
 
@@ -34,9 +34,9 @@ export const MumblePost: FC<Props> = ({ post }) => {
   const token = session?.accessToken;
 
   return (
-    <div className="bg-white w-[680px] px-xl py-8 rounded-2xl relative">
+    <div className="bg-white px-xl py-8 rounded-2xl relative">
       <div className="flex mb-s">
-        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
+        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out hidden md:block">
           <Link href={`/profile/${post.creator}`}>
             <ProfilePicture
               size="M"
@@ -79,7 +79,15 @@ export const MumblePost: FC<Props> = ({ post }) => {
           count={post.likeCount}
           onClick={() => handleLikes(isLiked, post.id, token, setError)}
         />
-        <ShareButton label="Copy Link" labelTransition="Copied!" link={`localhost:3000/mumble/${post.id}`} />
+        <ShareButton
+          label="Copy Link"
+          labelTransition="Copied!"
+          link={
+            `${getCurrentUrl(url)?.includes(`profile/${post.profile.user.id}`)}`
+              ? `${getCurrentUrl(url)?.replace(`profile/${post.profile.user.id}`, `mumble/${post.id}`)}`
+              : `${getCurrentUrl(url)}mumble/${post.id}`
+          }
+        />
       </div>
     </div>
   );

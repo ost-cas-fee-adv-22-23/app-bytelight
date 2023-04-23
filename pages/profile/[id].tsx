@@ -15,10 +15,11 @@ import { useState } from 'react';
 import { AllLikedPosts } from '../../components/all-liked-posts';
 import { AllUserPosts } from '../../components/all-user-posts';
 import { ErrorMessage } from '../../components/error-message';
+import { Fullscreen } from '../../components/full-screen';
+import { fallBackImgUrl } from '../../helper';
 import { useAsyncEffect } from '../../hooks/use-async-effect-hook';
 import { LikedPostsWithUser } from '../../models/mumble';
 import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
-import { fallBackImgUrl } from '../../helper';
 
 type PageProps = {
   profileUser?: {
@@ -63,61 +64,61 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
   }
 
   return (
-    <>
+    <Fullscreen>
       <Head>
         <title>Profile</title>
       </Head>
-      <div className="bg-slate-100 flex flex-col h-full items-center w-screen">
-        <div className="w-[615px] h-full rounded-2xl">
-          <div className="flex relative mt-s">
-            <Image
-              src="https://wallpaperaccess.com/full/2222765.jpg"
-              width={'100'}
-              height={'100'}
-              // eslint-disable-next-line react/forbid-component-props
-              className="rounded-xl w-full h-full"
-              alt="dt"
-            />
-            <div className="absolute mt-[260px] ml-[420px]">
-              <ProfilePicture
-                size="XL"
-                src={profileUser.user.avatarUrl ? profileUser.user.avatarUrl : fallBackImgUrl}
-                alt="profile-Picture"
-              />
-            </div>
-          </div>
-          <div className="mt-m h-full">
-            <Label variant="XL">
-              {profileData.firstName} {profileData.lastName}
-            </Label>
-            <div className="flex gap-x-s mb-s">
-              <IconLabel variant="violet" value={profileData.userName} icon={<ProfileIcon size="12" />} />
-            </div>
-          </div>
-          <Paragraph fontSize="M">
-            Paragraph – Quia aut et aut. Sunt et eligendi similique enim qui quo minus. Aut aut error velit voluptatum optio
-            sed quis cumque error magni. Deserunt pariatur molestiae incidunt. Omnis deserunt ratione et recusandae quos
-            excepturi ut deleniti ut repellat magni.
-          </Paragraph>
-
-          <div className="my-5">
-            <Switch
-              onClick={() => setViewSwitch(!viewSwitch)}
-              isActive={viewSwitch}
-              labelLeft={'Deine Mumbles'}
-              labelRight={'Deine Likes'}
+      <div className=" w-[415px] md:w-[615px] h-full rounded-2xl">
+        <div className="flex relative mt-s">
+          <Image
+            src="https://wallpaperaccess.com/full/2222765.jpg"
+            width={'100'}
+            height={'100'}
+            // eslint-disable-next-line react/forbid-component-props
+            className="rounded-xl w-full h-full"
+            alt="dt"
+          />
+          <div className="absolute mt-[260px] ml-[420px] hidden md:block">
+            <ProfilePicture
+              size="XL"
+              src={profileUser.user.avatarUrl ? profileUser.user.avatarUrl : fallBackImgUrl}
+              alt="profile-Picture"
             />
           </div>
-          {viewSwitch ? (
-            <AllUserPosts isLoading={isLoading} userPosts={userPosts} />
-          ) : likedPosts && likedPosts?.length > 0 ? (
-            likedPosts?.map((post) => <AllLikedPosts key={post.id} likedPost={post} />)
-          ) : (
-            <ErrorMessage text="User has not liked any posts" />
-          )}
         </div>
+        <div className="mt-m h-full">
+          <Label variant="XL">
+            {profileData.firstName} {profileData.lastName}
+          </Label>
+          <div className="flex gap-x-s mb-s">
+            <IconLabel variant="violet" value={profileData.userName} icon={<ProfileIcon size="12" />} />
+          </div>
+        </div>
+        <Paragraph fontSize="M">Hallo - Willkommen auf meinem Profil!</Paragraph>
+
+        <div className="my-5">
+          <Switch
+            onClick={() => setViewSwitch(!viewSwitch)}
+            isActive={viewSwitch}
+            labelLeft={'Deine Mumbles'}
+            labelRight={'Deine Likes'}
+          />
+        </div>
+        {viewSwitch ? (
+          <AllUserPosts isLoading={isLoading} userPosts={userPosts} />
+        ) : likedPosts && likedPosts?.length > 0 ? (
+          <ul className="flex flex-col gap-y-s">
+            {likedPosts?.map((post) => (
+              <li key={post.id}>
+                <AllLikedPosts key={post.id} likedPost={post} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ErrorMessage text="User has not liked any posts" />
+        )}
       </div>
-    </>
+    </Fullscreen>
   );
 }
 

@@ -4,6 +4,7 @@ import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { Fullscreen } from '../components/full-screen';
 import { LoadingSpinner } from '../components/loading-spinner';
 import { MumblePost } from '../components/mumble-post';
 import { TextareaCard } from '../components/textarea-card';
@@ -75,11 +76,11 @@ export default function Page({
   };
 
   return (
-    <>
+    <Fullscreen>
       <Head>
         <title>Feed</title>
       </Head>
-      <div className="bg-slate-100 flex flex-col items-center w-screen">
+      <div className="flex flex-col">
         {hasNew && (
           <div className="sticky top-0 z-10 pt-xs">
             <Button onClick={() => loadNew()} as="button">
@@ -87,16 +88,16 @@ export default function Page({
             </Button>
           </div>
         )}
-        <div className="flex flex-col justify-center w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs">
+        <div className="flex flex-col justify-center w-[480px] md:w-[680px] mt-8 [&>h2]:text-violet-600 [&>h4]:text-slate-500 gap-y-xs text-center md:text-left">
           <Heading2>Willkommen auf Mumble</Heading2>
           <Heading4>Voluptatem qui cumque voluptatem quia tempora dolores distinctio vel repellat dicta.</Heading4>
           <div className="py-s">
             <TextareaCard />
           </div>
         </div>
-        <ul className="flex flex-col gap-y-s">
+        <ul className="flex flex-col justify-center items-center gap-y-s ">
           {mumbles.map((mumble) => (
-            <li key={mumble.id}>
+            <li key={mumble.id} className="w-[480px] md:w-[680px]">
               <MumblePost post={mumble} />
             </li>
           ))}
@@ -109,9 +110,10 @@ export default function Page({
           </div>
         )}
       </div>
-    </>
+    </Fullscreen>
   );
 }
+
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req }) => {
   const token = await getToken({ req });
 

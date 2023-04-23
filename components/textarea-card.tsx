@@ -52,7 +52,7 @@ export const TextareaCard = () => {
   return (
     <>
       <div className="bg-white px-xl py-l rounded-2xl relative">
-        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out">
+        <div className="absolute -left-8 top-5 hover:scale-105 transition ease-in-out hidden md:block">
           <Link href={`/profile/${session?.user.id}`}>
             <ProfilePicture size="M" src={avatarUrl ?? fallBackImgUrl} alt="profile-picture" />
           </Link>

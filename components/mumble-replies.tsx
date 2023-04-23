@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, handleLikes } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
 import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
@@ -84,7 +84,7 @@ export const MumbleReplies: FC<Props> = ({ reply }) => {
           count={reply.likeCount}
           onClick={() => handleLikes(isLiked, reply.id, token, setError)}
         />
-        <ShareButton label="Copy Link" labelTransition="Copied!" link={`localhost:3000/mumble/${reply.parentId}`} />
+        <ShareButton label="Copy Link" labelTransition="Copied!" link={`${getCurrentUrl(url)}`} />
       </div>
     </div>
   );

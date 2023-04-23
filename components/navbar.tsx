@@ -16,7 +16,7 @@ export const Navbar = () => {
   const avatarUrl = session?.user.avatarUrl;
 
   return (
-    <div className="flex items-center bg-violet-600 w-full  px-[25px] md:px-[50px] xl:px-[360px] py-xs">
+    <div className="flex items-center bg-violet-600 min-w-full px-[25px] md:px-[50px] xl:px-[360px] py-xs">
       <span className="hover:scale-105 transition ease-in-out">
         <Link href={'/'}>
           <NavbarMumble />
@@ -28,9 +28,9 @@ export const Navbar = () => {
             <ProfilePicture size="S" src={avatarUrl ?? fallBackImgUrl} alt="profile-avatar" />
           </Link>
         </div>
-        <div className="text-white">
+        <div className="text-white hidden md:block">
           <NavbarButton label="Settings" onClick={() => alert('Hoi')}>
-            <div className="group-hover:rotate-180 transition duration-1000 transform-none text-white">
+            <div className="group-hover:rotate-180 transition duration-1000 transform-none text-white ">
               <SettingsIcon size="16px" />
             </div>
           </NavbarButton>

@@ -1,22 +1,71 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Live Demo
+
+The latest version of the App is available [here](https://app-bytelight-two.vercel.app/).
+
+## Authenticating GitHub Registry
+
+1. Create a personal GitHub access token.
+2. Create a new ~/.npmrc file if one doesn't exist.
+3. Include the following line, replacing TOKEN with your personal access token.
+
+```console
+@smartive-education:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=[TOKEN]
+```
+
+## Next-App Installation
+
+```console
+npm ci
+```
+
+# Getting Started
 
 First, run the development server:
 
-```bash
+```console
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+To build the application local run:
+
+```console
+npm run build
+```
+
+### Scripts
+
+#### ESLint
+
+ESLint is configured to check:
+
+```console
+npm run lint
+npm run lint:fix
+```
+
+#### Prettier
+
+Prettier configuration:
+
+- "@smartive/prettier-config"
+
+```console
+npm run prettier
+npm run prettier:check
+```
+
+#### Prettier & ESLint
+
+```console
+npm run style-check
+```
+
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Learn More
 

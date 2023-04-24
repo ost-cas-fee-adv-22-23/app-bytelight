@@ -16,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { Mumble } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
 
@@ -28,7 +28,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
   const [isLiked] = useState(post.likedByUser);
   const [error, setError] = useState(false);
   const dateFormat = new Date(post.createdTimestamp ?? '1111');
-  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const datePrint = getTimeSince(dateFormat);
   const { data: session } = useSession();
   const router = useRouter();
   const token = session?.accessToken;

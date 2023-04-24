@@ -16,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { LikedPostWithUser } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 
@@ -28,7 +28,7 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
   const [isLiked] = useState(likedPost.likedByUser);
   const [error, setError] = useState(false);
   const dateFormat = new Date(likedPost.createdTimestamp ?? '1111');
-  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const datePrint = getTimeSince(dateFormat);
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.accessToken;

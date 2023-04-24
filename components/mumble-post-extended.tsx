@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
@@ -24,7 +24,7 @@ type Props = {
 
 export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   const dateFormat = new Date(postWithReplies.createdTimestamp ?? '1111');
-  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const datePrint = getTimeSince(dateFormat);
   const [isLiked] = useState(postWithReplies.likedByUser);
   const [error, setError] = useState(false);
   const { data: session } = useSession();

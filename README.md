@@ -1,34 +1,84 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Live Demo
+
+The latest version of the App is available [here](https://app-bytelight-two.vercel.app/).
+
+## Clone the repo.
+
+`git clone https://github.com/smartive-education/app-bytelight`
+
+## Authenticating GitHub Registry
+
+1. Create a personal GitHub access token.
+2. Create a new ~/.npmrc file if one doesn't exist.
+3. Include the following line, replacing TOKEN with your personal access token.
+
+```console
+@smartive-education:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=[TOKEN]
+```
+
+## 3. Create a local security environment file for variables.
+
+Create a `.env` file and copy these keys and insert confidential values
+
+    # Qwacker backend
+    NEXT_PUBLIC_QWACKER_API_URL= [QWACKER_API_URL]
+
+    # Authentication
+    NEXTAUTH_URL=http://localhost:3000
+    NEXTAUTH_SECRET=[NEXTAUTH_SECRET]
+
+    ZITADEL_ISSUER=[ZITADEL ISSUER URL]
+    ZITADEL_CLIENT_ID=[ZITADEL CLIENT ID]
+
+## Next-App Installation
+
+```console
+npm ci
+```
+
+# Getting Started
 
 First, run the development server:
 
-```bash
+```console
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+To build the application local run:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```console
+npm run build
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Scripts
 
-## Learn More
+#### ESLint
 
-To learn more about Next.js, take a look at the following resources:
+ESLint is configured to check:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```console
+npm run lint
+npm run lint:fix
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Prettier
 
-## Deploy on Vercel
+Prettier configuration:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- "@smartive/prettier-config"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```console
+npm run prettier
+npm run prettier:check
+```
+
+#### Prettier & ESLint
+
+```console
+npm run style-check
+```

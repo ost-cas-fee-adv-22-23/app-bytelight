@@ -7,7 +7,7 @@ type Props = {
 
 export const DeleteButton: FC<Props> = ({ onClick }) => (
   <div className="flex items-center text-slate-600 hover:bg-slate-100 hover:rounded-2xl p-xs hover:text-slate-800">
-    <button className="" onClick={onClick}>
+    <button onClick={onClick}>
       <span className="flex items-center gap-x-xs">
         <CancelIcon size="16px" /> Delete
       </span>

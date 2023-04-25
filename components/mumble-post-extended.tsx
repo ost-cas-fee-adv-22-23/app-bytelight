@@ -17,6 +17,8 @@ import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
 import { ReplyTextarea } from './reply-textarea';
+import { useAsyncEffect } from '../hooks/use-async-effect-hook';
+import { getPostWithReplies } from '../services/qwacker';
 
 type Props = {
   postWithReplies: MumbleWithReplies;
@@ -25,6 +27,7 @@ type Props = {
 export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   const [datePrint, setDatePrint] = useState<string>('no date');
   const [isLiked] = useState(postWithReplies.likedByUser);
+  const [replies, setReplies] = useState(postWithReplies.replies);
   const [error, setError] = useState(false);
   const { data: session } = useSession();
   const token = session?.accessToken;
@@ -32,6 +35,12 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   useEffect(() => {
     setDatePrint(getTimeSince(new Date(postWithReplies.createdTimestamp)));
   }, [postWithReplies]);
+
+  useAsyncEffect(async () => {
+    console.log(session?.accessToken);
+    const a = await getPostWithReplies(postWithReplies.id, session?.accessToken);
+    setReplies(a.replies);
+  }, [postWithReplies.replies.length]);
 
   return (
     <div className="bg-white w-[480px] md:w-[680px] px-xl py-8 rounded-2xl relative">
@@ -78,7 +87,7 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
         <ShareButton label="Copy Link" labelTransition="Copied!" link={`${getCurrentUrl(url)}`} />
       </div>
       <ReplyTextarea postId={postWithReplies.id} />
-      {postWithReplies.replies.map((reply) => (
+      {replies.map((reply) => (
         <MumbleReplies reply={reply} key={reply.id} />
       ))}
     </div>

@@ -20,6 +20,8 @@ import { fallBackImgUrl } from '../../helper';
 import { useAsyncEffect } from '../../hooks/use-async-effect-hook';
 import { LikedPostsWithUser } from '../../models/mumble';
 import { Mumble, fetchUserById, getPostsByUser, getPostsThatAreLikedByUser } from '../../services/qwacker';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth';
 
 type PageProps = {
   profileUser?: {
@@ -125,6 +127,7 @@ export default function ProfilePage({ profileUser, error }: PageProps) {
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
   const { id } = context.query;
   const token = await getToken({ req: context.req });
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!token) {
     throw Error('no token');
@@ -141,7 +144,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
   try {
     const profileUser = await fetchUserById({ id: id, accessToken: token.accessToken as string });
 
-    return { props: { profileUser } };
+    return { props: { profileUser, session } };
   } catch (error) {
     let message;
     if (error instanceof Error) {

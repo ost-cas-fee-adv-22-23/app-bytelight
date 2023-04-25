@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { Fullscreen } from '../../components/full-screen';
 import { MumblePostExtended } from '../../components/mumble-post-extended';
 import { getPostWithReplies } from '../../services/qwacker';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ postWithReplies }) => {
   return (
@@ -20,8 +22,9 @@ const MumblePage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
 
 export default MumblePage;
 
-export const getServerSideProps = async ({ req, query }: GetServerSidePropsContext) => {
+export const getServerSideProps = async ({ req, res, query }: GetServerSidePropsContext) => {
   const token = await getToken({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!token) {
     throw Error('no token');
@@ -32,8 +35,9 @@ export const getServerSideProps = async ({ req, query }: GetServerSidePropsConte
   try {
     const postWithReplies = await getPostWithReplies(id as string, token.accessToken);
 
-    return { props: { postWithReplies } };
+    return { props: { postWithReplies, session } };
   } catch (error) {
     console.log('error');
+    throw error;
   }
 };

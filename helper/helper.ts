@@ -24,13 +24,27 @@ export const transformLikedPost = async (post: LikedPost, accessToken?: string) 
   };
 };
 
-export const handleDelte = (
+export const handleDelete = (
   postId: string,
   token: string | undefined,
   setError: (value: SetStateAction<boolean>) => void
 ) => {
   try {
     deletePost(postId, token);
+  } catch {
+    setError(true);
+  }
+};
+
+export const handleLikes = (
+  isLiked: boolean,
+  postId: string,
+  token: string | undefined,
+  setError: (value: SetStateAction<boolean>) => void
+) => {
+  try {
+    updatePostLike(isLiked ? 'unlike' : 'like', postId, token);
+    window.location.reload();
   } catch {
     setError(true);
   }
@@ -79,18 +93,4 @@ export const getTimeSince = (date: Date): string => {
 
   //seconds ago
   return `vor ${Math.floor(seconds)} Sekunden`;
-};
-
-export const handleLikes = (
-  isLiked: boolean,
-  postId: string,
-  token: string | undefined,
-  setError: (value: SetStateAction<boolean>) => void
-) => {
-  try {
-    updatePostLike(isLiked ? 'unlike' : 'like', postId, token);
-    window.location.reload();
-  } catch {
-    setError(true);
-  }
 };

@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleDelte, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, handleDelete, handleLikes, url } from '../helper';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
 import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
@@ -89,7 +89,7 @@ export const MumbleReplies: FC<Props> = ({ reply }) => {
         {session?.user.id === reply.creator && (
           <DeleteButton
             onClick={() => {
-              handleDelte(reply.id, token, setError);
+              handleDelete(reply.id, token, setError);
               window.location.reload();
             }}
           />

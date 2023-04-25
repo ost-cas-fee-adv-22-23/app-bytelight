@@ -16,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleDelte, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleDelete, handleLikes, url } from '../helper';
 import { Mumble } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
 import { DeleteButton } from './delete-button';
@@ -95,7 +95,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
         {session?.user.id === post.creator && (
           <DeleteButton
             onClick={() => {
-              handleDelte(post.id, token, setError);
+              handleDelete(post.id, token, setError);
               window.location.reload();
             }}
           />

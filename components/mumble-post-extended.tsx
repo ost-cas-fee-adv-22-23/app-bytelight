@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleDelte, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleDelete, handleLikes, url } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
@@ -90,7 +90,7 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
         {session?.user.id === postWithReplies.creator && (
           <DeleteButton
             onClick={() => {
-              handleDelte(postWithReplies.id, token, setError);
+              handleDelete(postWithReplies.id, token, setError);
               router.push('/');
             }}
           />

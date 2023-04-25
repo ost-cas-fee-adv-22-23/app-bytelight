@@ -11,8 +11,8 @@ import {
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
+import { FC, useEffect, useState } from 'react';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
@@ -23,12 +23,15 @@ type Props = {
 };
 
 export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
-  const dateFormat = new Date(postWithReplies.createdTimestamp ?? '1111');
-  const datePrint = dateFormat.getHours() + ':' + dateFormat.getMinutes() + ', ' + dateFormat.toDateString();
+  const [datePrint, setDatePrint] = useState<string>('no date');
   const [isLiked] = useState(postWithReplies.likedByUser);
   const [error, setError] = useState(false);
   const { data: session } = useSession();
   const token = session?.accessToken;
+
+  useEffect(() => {
+    setDatePrint(getTimeSince(new Date(postWithReplies.createdTimestamp)));
+  }, [postWithReplies]);
 
   return (
     <div className="bg-white w-[480px] md:w-[680px] px-xl py-8 rounded-2xl relative">
@@ -48,7 +51,6 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
             <Link href={`/profile/${postWithReplies.creator}`}>
               <IconLabel variant="violet" value={postWithReplies.profile.user.userName} icon={<ProfileIcon size="12" />} />
             </Link>
-
             <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
           </div>
         </div>
@@ -69,7 +71,7 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
       {error && <ErrorMessage text="Something went wrong" />}
       <div className="flex justify-start gap-x-l mt-s">
         <LikeAction
-          hasMyLike={postWithReplies.likeCount > 0}
+          hasMyLike={postWithReplies.likedByUser}
           count={postWithReplies.likeCount}
           onClick={() => handleLikes(isLiked, postWithReplies.id, token, setError)}
         />

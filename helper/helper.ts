@@ -37,3 +37,48 @@ export const handleLikes = (
     setError(true);
   }
 };
+
+export const getTimeSince = (date: Date): string => {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+  // month
+  let interval = Math.floor(seconds / 2592000);
+  if (interval > 1) {
+    return `vor ${interval} Monaten`;
+  }
+  if (interval == 1) {
+    return `vor einem Monat`;
+  }
+
+  // days
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) {
+    return `vor ${interval} Tagen`;
+  }
+  if (interval == 1) {
+    return `vor einem Tag`;
+  }
+
+  // houres
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) {
+    return `vor ${interval} Stunden`;
+  }
+  if (interval == 1) {
+    return `vor einer Stunde`;
+  }
+
+  // minutes
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) {
+    return `vor ${interval} Minuten`;
+  }
+  if (interval == 1) {
+    return `vor einer Minute`;
+  }
+  // now
+  if (seconds < 10) return 'gerade jetzt';
+
+  //seconds ago
+  return `vor ${Math.floor(seconds)} Sekunden`;
+};

@@ -80,7 +80,7 @@ export const MumbleReplies: FC<Props> = ({ reply }) => {
       {error && <ErrorMessage text="Something went wrong" />}
       <div className="flex justify-start gap-x-l my-s">
         <LikeAction
-          hasMyLike={reply.likeCount > 0}
+          hasMyLike={reply.likedByUser}
           count={reply.likeCount}
           onClick={() => handleLikes(isLiked, reply.id, token, setError)}
         />

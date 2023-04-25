@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { Mumble } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
@@ -27,11 +27,14 @@ export type Props = {
 export const MumblePost: FC<Props> = ({ post }) => {
   const [isLiked] = useState(post.likedByUser);
   const [error, setError] = useState(false);
-  const dateFormat = new Date(post.createdTimestamp ?? '1111');
-  const datePrint = getTimeSince(dateFormat);
+  const [datePrint, setDatePrint] = useState<string>();
   const { data: session } = useSession();
   const router = useRouter();
   const token = session?.accessToken;
+
+  useEffect(() => {
+    setDatePrint(getTimeSince(new Date(post.createdTimestamp ?? '1111')));
+  }, [post]);
 
   return (
     <div className="bg-white px-xl py-8 rounded-2xl relative">
@@ -52,7 +55,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
               <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
             </Link>
             <Link href={`/mumble/${post.id}`}>
-              <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
+              <IconLabel variant="gray" value={datePrint ?? 'no data'} icon={<ClockIcon size="12" />} />
             </Link>
           </div>
         </div>
@@ -75,7 +78,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
           className={''}
         />
         <LikeAction
-          hasMyLike={post.likeCount > 0}
+          hasMyLike={post.likedByUser}
           count={post.likeCount}
           onClick={() => handleLikes(isLiked, post.id, token, setError)}
         />

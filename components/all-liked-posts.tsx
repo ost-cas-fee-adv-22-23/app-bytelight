@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
 import { LikedPostWithUser } from '../models/mumble';
 import { ErrorMessage } from './error-message';
@@ -27,11 +27,14 @@ type Props = {
 export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
   const [isLiked] = useState(likedPost.likedByUser);
   const [error, setError] = useState(false);
-  const dateFormat = new Date(likedPost.createdTimestamp ?? '1111');
-  const datePrint = getTimeSince(dateFormat);
+  const [datePrint, setDatePrint] = useState<string>();
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.accessToken;
+
+  useEffect(() => {
+    setDatePrint(getTimeSince(new Date(likedPost.createdTimestamp ?? '1111')));
+  }, [likedPost]);
 
   return (
     <>
@@ -53,7 +56,7 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
                 <IconLabel variant="violet" value={likedPost.profile.user.userName} icon={<ProfileIcon size="12" />} />
               </Link>
               <Link href={`/mumble/${likedPost.id}`}>
-                <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
+                <IconLabel variant="gray" value={datePrint ?? 'no date'} icon={<ClockIcon size="12" />} />
               </Link>
             </div>
           </div>
@@ -83,7 +86,7 @@ export const AllLikedPosts: FC<Props> = ({ likedPost }) => {
             className={''}
           />
           <LikeAction
-            hasMyLike={likedPost.likeCount > 0}
+            hasMyLike={likedPost.likedByUser}
             count={likedPost.likeCount}
             onClick={() => handleLikes(isLiked, likedPost.id, token, setError)}
           />

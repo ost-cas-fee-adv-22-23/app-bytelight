@@ -23,14 +23,14 @@ type Props = {
 };
 
 export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
-  const [datePrint, setDatePrint] = useState<string>();
+  const [datePrint, setDatePrint] = useState<string>('no date');
   const [isLiked] = useState(postWithReplies.likedByUser);
   const [error, setError] = useState(false);
   const { data: session } = useSession();
   const token = session?.accessToken;
 
   useEffect(() => {
-    setDatePrint(getTimeSince(new Date(postWithReplies.createdTimestamp ?? '1111')));
+    setDatePrint(getTimeSince(new Date(postWithReplies.createdTimestamp)));
   }, [postWithReplies]);
 
   return (
@@ -52,7 +52,7 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
               <IconLabel variant="violet" value={postWithReplies.profile.user.userName} icon={<ProfileIcon size="12" />} />
             </Link>
 
-            <IconLabel variant="gray" value={datePrint ?? 'no date'} icon={<ClockIcon size="12" />} />
+            <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
           </div>
         </div>
       </div>

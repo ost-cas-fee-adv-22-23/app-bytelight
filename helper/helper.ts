@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react';
 import { decodeTime } from 'ulid';
 import { LikedPost } from '../models/mumble';
-import { RawMumble, fetchUserById, updatePostLike } from '../services/qwacker';
+import { RawMumble, deletePost, fetchUserById, updatePostLike } from '../services/qwacker';
 
 export const getHeaders = (accessToken: string | undefined) => {
   const headers = { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` };
@@ -24,15 +24,13 @@ export const transformLikedPost = async (post: LikedPost, accessToken?: string) 
   };
 };
 
-export const handleLikes = (
-  isLiked: boolean,
+export const handleDelte = (
   postId: string,
   token: string | undefined,
   setError: (value: SetStateAction<boolean>) => void
 ) => {
   try {
-    updatePostLike(isLiked ? 'unlike' : 'like', postId, token);
-    window.location.reload();
+    deletePost(postId, token);
   } catch {
     setError(true);
   }
@@ -81,4 +79,18 @@ export const getTimeSince = (date: Date): string => {
 
   //seconds ago
   return `vor ${Math.floor(seconds)} Sekunden`;
+};
+
+export const handleLikes = (
+  isLiked: boolean,
+  postId: string,
+  token: string | undefined,
+  setError: (value: SetStateAction<boolean>) => void
+) => {
+  try {
+    updatePostLike(isLiked ? 'unlike' : 'like', postId, token);
+    window.location.reload();
+  } catch {
+    setError(true);
+  }
 };

@@ -235,3 +235,25 @@ export const postComment = async (id: string, text: string, file: File | undefin
 
   return transformMumble(await response.json());
 };
+
+//Delete a post
+export const deletePost = async (mumbleId: string, accessToken?: string) => {
+  if (!accessToken) {
+    throw new Error('No access token');
+  }
+
+  if (!mumbleId) {
+    throw new Error('No Mumble ID available');
+  }
+
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${mumbleId}`;
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: getHeaders(accessToken),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+};

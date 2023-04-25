@@ -12,13 +12,15 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, getTimeSince, handleDelte, handleLikes, url } from '../helper';
 import { MumbleWithReplies } from '../models/mumble';
 import { ErrorMessage } from './error-message';
 import { MumbleReplies } from './mumble-replies';
 import { ReplyTextarea } from './reply-textarea';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
 import { getPostWithReplies } from '../services/qwacker';
+import { useRouter } from 'next/router';
+import { DeleteButton } from './delete-button';
 
 type Props = {
   postWithReplies: MumbleWithReplies;
@@ -31,15 +33,15 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
   const [error, setError] = useState(false);
   const { data: session } = useSession();
   const token = session?.accessToken;
+  const router = useRouter();
 
   useEffect(() => {
     setDatePrint(getTimeSince(new Date(postWithReplies.createdTimestamp)));
   }, [postWithReplies]);
 
   useAsyncEffect(async () => {
-    console.log(session?.accessToken);
-    const a = await getPostWithReplies(postWithReplies.id, session?.accessToken);
-    setReplies(a.replies);
+    const response = await getPostWithReplies(postWithReplies.id, session?.accessToken);
+    setReplies(response.replies);
   }, [postWithReplies.replies.length]);
 
   return (
@@ -85,6 +87,14 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
           onClick={() => handleLikes(isLiked, postWithReplies.id, token, setError)}
         />
         <ShareButton label="Copy Link" labelTransition="Copied!" link={`${getCurrentUrl(url)}`} />
+        {session?.user.id === postWithReplies.creator && (
+          <DeleteButton
+            onClick={() => {
+              handleDelte(postWithReplies.id, token, setError);
+              router.push('/');
+            }}
+          />
+        )}
       </div>
       <ReplyTextarea postId={postWithReplies.id} />
       {replies.map((reply) => (

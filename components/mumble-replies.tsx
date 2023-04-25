@@ -11,11 +11,12 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { fallBackImgUrl, getCurrentUrl, handleLikes, url } from '../helper';
+import { fallBackImgUrl, getCurrentUrl, handleDelete, handleLikes, url } from '../helper';
 import { useAsyncEffect } from '../hooks/use-async-effect-hook';
 import { MumbleReply, QwackerUserResponse, fetchUserById } from '../services/qwacker';
 import { ErrorMessage } from './error-message';
 import { LoadingSpinner } from './loading-spinner';
+import { DeleteButton } from './delete-button';
 
 type Props = {
   reply: MumbleReply;
@@ -85,6 +86,14 @@ export const MumbleReplies: FC<Props> = ({ reply }) => {
           onClick={() => handleLikes(isLiked, reply.id, token, setError)}
         />
         <ShareButton label="Copy Link" labelTransition="Copied!" link={`${getCurrentUrl(url)}`} />
+        {session?.user.id === reply.creator && (
+          <DeleteButton
+            onClick={() => {
+              handleDelete(reply.id, token, setError);
+              window.location.reload();
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -51,7 +51,6 @@ export const MumblePostExtended: FC<Props> = ({ postWithReplies }) => {
             <Link href={`/profile/${postWithReplies.creator}`}>
               <IconLabel variant="violet" value={postWithReplies.profile.user.userName} icon={<ProfileIcon size="12" />} />
             </Link>
-
             <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
           </div>
         </div>

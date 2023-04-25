@@ -45,6 +45,8 @@ export default NextAuth({
     maxAge: 12 * 60 * 60, // 12 hours
   },
   callbacks: {
+    // useSession()
+    // getToken
     async jwt({ token, user, account }) {
       if (account) {
         token.accessToken = account.access_token;
@@ -60,6 +62,7 @@ export default NextAuth({
 
       return token;
     },
+    // useSession()
     async session({ session, token }) {
       session.user = token.user || {};
       session.accessToken = token.accessToken;

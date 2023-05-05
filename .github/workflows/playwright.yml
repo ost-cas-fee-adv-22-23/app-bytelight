@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "@smartive-education:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=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" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=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" >> .npmrc
           npm ci
       - name: Run Playwright tests
         run: npm run test

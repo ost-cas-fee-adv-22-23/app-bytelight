@@ -14,7 +14,10 @@ jobs:
         with:
           node-version: 16
       - name: Install dependencies
-        run: NPM_TOKEN=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 npm ci
+        run: |
+          echo "@smartive-education:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=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" >> .npmrc
+          npm ci
       - name: Run Playwright tests
         run: npm run test
       - uses: actions/upload-artifact@v3

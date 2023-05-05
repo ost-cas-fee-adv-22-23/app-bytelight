@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: 16
       - name: Install dependencies
+        run: EXPORT NPM_TOKEN=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
         run: npm ci
       - name: Run Playwright tests
         run: npm run test

@@ -13,8 +13,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Install dependencies
+      - name: Use Token
         run: EXPORT NPM_TOKEN=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
+      - name: Install dependencies
         run: npm ci
       - name: Run Playwright tests
         run: npm run test

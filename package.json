@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write . \"./**/*.{ts,tsx}\"",
     "prettier:check": "prettier --check \"./**/*.{ts,tsx}\"",
-    "style-check": "npm run lint && npm run prettier:check"
+    "style-check": "npm run lint && npm run prettier:check",
+    "test": "playwright test --headed"
   },
   "dependencies": {
     "@smartive-education/design-system-component-library-bytelight": "^1.1.6",
@@ -27,6 +28,7 @@
     "ulid": "^2.3.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.33.0",
     "@smartive/eslint-config": "^3.1.1",
     "@smartive/prettier-config": "^3.0.0",
     "autoprefixer": "^10.4.13",

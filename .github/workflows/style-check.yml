@@ -2,13 +2,9 @@ name: ESLint and Prettier
 
 on:
   push:
-    branches:
-      - main
-      - feat/*
-      - fix/*
-      - chore/*
-      - update/*
-
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   style_checks:
     name: Style Checks

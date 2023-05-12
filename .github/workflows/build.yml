@@ -2,13 +2,9 @@ name: Build
 
 on:
   push:
-    branches:
-      - main
-      - feat/*
-      - fix/*
-      - chore/*
-      - update/*
-
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   build:
     name: Build

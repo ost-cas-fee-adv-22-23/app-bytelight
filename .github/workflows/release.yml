@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        run: docker build \
-          --file Dockerfile \
-          --tag app-bytelight:$(date +%s) \
-          --build-arg NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}\
-          .
+        run: |
+          docker build \
+           --build-arg NPM_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+           --tag app-bytelight:$(date +%s) \
+           .

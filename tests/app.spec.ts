@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { makeLogin } from './utils';
+import { makeLogin } from './test-utils';
 
 test.beforeEach(async ({ page }) => {
   makeLogin(page);

@@ -1,11 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { makeLogin } from './test-utils';
 
 test.describe('Mumble e2e Tests', () => {
   test.beforeEach(async ({ page }) => {
-    makeLogin(page);
+    await page.goto('http://localhost:3000/');
   });
-
   test('create a post', async ({ page }) => {
     await page.getByRole('heading', { name: 'Willkommen auf Mumble' }).click();
     await page.getByPlaceholder('Deine Meinung zählt').fill('Ich bin ein TEST!');

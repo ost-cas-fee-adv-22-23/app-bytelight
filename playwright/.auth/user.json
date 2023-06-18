@@ -1,0 +1,75 @@
+{
+  "cookies": [
+    {
+      "name": "next-auth.csrf-token",
+      "value": "f6682c5f2776b3a78e12b684b8d06068a0df018015516e033c712f01e44e2ac7%7C9a015e3ed16515aaf6e9f767893f256f36c8f460b0de69f6d164f623e83941d8",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "next-auth.callback-url",
+      "value": "http%3A%2F%2Flocalhost%3A3000%2F",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Host-zitadel.login.csrf",
+      "value": "MTY4NzEwOTg2NnxJbGxxVW1rdk16SjZhVzVCSzFwbGJtSlJlRWhrU1VWeFREUTNNSGxqYlVscVVHWkNlakpsT1ZCTVVIYzlJZ289fKj5YmOZabmyCxhnHyhEp6ebDhi-tIgTQgvlmZnkrq5o",
+      "domain": "cas-fee-advanced-ocvdad.zitadel.cloud",
+      "path": "/",
+      "expires": 1687153066.649652,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "mode",
+      "value": "auto-light",
+      "domain": "cas-fee-advanced-ocvdad.zitadel.cloud",
+      "path": "/",
+      "expires": 1718645868,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Secure-zitadel.useragent",
+      "value": "MTY4NzEwOTg3MXwtcGdOMDF4b2tka2d2UFNhMkI0ZUtzUmRCV2VqbWdfY0d3UGh2WEtzMVY4cldYS1BQMElxRWpXbUdmMVZKMjU4dV9kVVhFUlVnQ21ydzRZS2RUVVRFNFFHNlg1Qnpjcz18VmM01IRnFXeYmhScxoDgWdo7fgZ1KlWKGVQ8zljIeyc=",
+      "domain": ".cas-fee-advanced-ocvdad.zitadel.cloud",
+      "path": "/",
+      "expires": 1718645872.276526,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "next-auth.session-token",
+      "value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0.._2d-Aan_KZLZmN7z.vZq2VP6iYOUlaj-WtbNGpI1U3ryhv6Cf6GukeKpdpiCsdcbBiaQrOCxNyK5HC6_Czdfgs_6vTe5_J7MWqyTpYEHYI7LP8o8ZFqfjNCFNViukHBR7uWzgfiRMavg2lrC2-i48lSJDkIfqxy0QtVtfSUfHEeEBaL6o86Q1-YSsZUIUr3P4-m7UlTfUq8B4J3fd49wlwubKNxin5xCoKo-a-_ceodWa1iMHqMyzC-PiSVXaQaEL9FYUQ7pCQc4VzcAtVq4FwiN2XyoVH8s1wEaamI7t6MnITwTHedspfzKtquEnTblR5QRGyYFZb1x4g9hrvSk8qT05KkSDQ29WK4MuTPkqKr1d9DmyZp23ELNrcDcABXTo_vY8nxSQlj6c3ToW1uorV9YjDy68Xy634WhP9k9SCxgk5vDays0cNhQUnmDFPkuxhec._8j4xq51CSddEg-_QEDwfA",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1687153074.783603,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "nextauth.message",
+          "value": "{\"event\":\"session\",\"data\":{\"trigger\":\"getSession\"},\"timestamp\":1687109874}"
+        }
+      ]
+    }
+  ]
+}

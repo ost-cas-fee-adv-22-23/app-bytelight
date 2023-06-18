@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   makeLogin(page);
 });
 
-test.only('test application', async ({ page }) => {
+test('test application', async ({ page }) => {
   await page.getByRole('heading', { name: 'Willkommen auf Mumble' }).click();
   await page.getByPlaceholder('Deine Meinung zählt').fill('Ich bin ein TEST!');
   await page.getByRole('button', { name: 'Absenden' }).click();

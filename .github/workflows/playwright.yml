@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "@smartive-education:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_TESTING }}" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
           npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps

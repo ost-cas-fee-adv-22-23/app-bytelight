@@ -3,7 +3,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 export const authOptions: NextAuthOptions = {
   providers: [
     {
-      id: 'zitadel',
+      id: 'zitadelx',
       name: 'zitadel',
       type: 'oauth',
       version: '2',

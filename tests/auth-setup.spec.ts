@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { makeLogin } from './test-utils';
 
 test('test login screen', async ({ page }) => {
   await page.goto('http://localhost:3000/');
@@ -12,4 +13,12 @@ test('test login screen', async ({ page }) => {
   await page.getByText('next').click();
 
   await page.getByRole('heading', { name: 'Willkommen auf Mumble' }).click();
+});
+
+test('test logout screen', async ({ page }) => {
+  await makeLogin(page);
+  await page.getByRole('button', { name: 'Log Out' }).click();
+  expect(await page.getByRole('heading', { name: 'Hey there.' })).toBeTruthy();
+
+  expect(await page.screenshot({ scale: 'css', animations: 'disabled' })).toMatchSnapshot('login-page.png');
 });

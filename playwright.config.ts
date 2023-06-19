@@ -51,12 +51,6 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
       },
     },
-    {
-      name: 'logged out chromium',
-      use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/*loggedin.spec.ts'],
-    },
-
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

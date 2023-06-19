@@ -71,7 +71,7 @@ test.describe('Mumble e2e Tests', () => {
       .getByRole('button', { name: '1 Coms' });
   });
 
-  test.only('test logout screen', async ({ page }) => {
+  test('test logout screen', async ({ page }) => {
     await page.getByRole('button', { name: 'Log Out' }).click();
     await page.waitForLoadState('networkidle');
     expect(page.getByRole('heading', { name: 'Hey there.' })).toBeTruthy();

@@ -11,7 +11,11 @@
     "prettier": "prettier --write . \"./**/*.{ts,tsx}\"",
     "prettier:check": "prettier --check \"./**/*.{ts,tsx}\"",
     "style-check": "npm run lint && npm run prettier:check",
-    "test": "npx playwright test"
+   "test:ci":"npx playwright test",
+   "test":"docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.33.0-focal /bin/bash -c \"npx playwright test\"",
+   "test:update-snapshot":"docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.33.0-focal /bin/bash -c \"npx playwright test --update-snapshots\""
+
+
   },
   "dependencies": {
     "@smartive-education/design-system-component-library-bytelight": "^1.1.6",

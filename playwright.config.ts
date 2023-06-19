@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
 
 /**
  * Read environment variables from file.
@@ -9,6 +10,9 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
+
 export default defineConfig({
   webServer: { command: 'npm run dev', url: 'http://localhost:3000' },
   testDir: './tests',
@@ -29,15 +33,24 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    baseURL: 'http://localhost:3000/',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'setup',
+      testMatch: /global.setup\.ts/,
     },
-
+    {
+      name: 'logged in chromium',
+      testMatch: '**/*.loggedin.spec.ts',
+      dependencies: ['setup'],
+      use: {
+        storageState: STORAGE_STATE,
+        ...devices['Desktop Chrome'],
+      },
+    },
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

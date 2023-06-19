@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "next-auth.csrf-token",
-      "value": "2c9814537c47693b8e9ee3e7aa3c63c05243e78037ee0a00f3008436a99aaf18%7C374d6e756d90eff6108f382a606ee569545aea908b39fbd88594164f015ebc98",
+      "value": "c67a5341150f2515f6c81667b9fea0d0b58f790552ace2d0918b885632b09362%7Cbfdb36ef2e350341f9e631e415a82a54ed4457b56e8ea4fab995fd5fc393937c",
       "domain": "localhost",
       "path": "/",
       "expires": -1,
@@ -22,10 +22,10 @@
     },
     {
       "name": "__Host-zitadel.login.csrf",
-      "value": "MTY4NzE4ODY1OXxJbWhIVVZNMFJ5OTRWR05FWnpadlMyUkZXRFJ3V0dkRFEyNTBSM1ZEU1RkWVl6TjRVVmx2VEZOblFXODlJZ289fOTRRdQlHbMPsR2hGoKe7OT-REt9oW9ewk8xVA5NmZOr",
+      "value": "MTY4NzE5ODQ0MHxJbVowYlZZd1pVNHZTSFF5TkZsa2FUSjJOV3BVZDIwMGJFSmFTbWRxUjJSV2FYTk5PWFpXVEZOSFpqZzlJZ289fGntuiS13bqTgvhJ30OmY0sHR1mzR_P8WjhHjZ4nz4QV",
       "domain": "cas-fee-advanced-ocvdad.zitadel.cloud",
       "path": "/",
-      "expires": 1687231859.267042,
+      "expires": 1687241640.641879,
       "httpOnly": true,
       "secure": true,
       "sameSite": "Lax"
@@ -35,27 +35,27 @@
       "value": "auto-light",
       "domain": "cas-fee-advanced-ocvdad.zitadel.cloud",
       "path": "/",
-      "expires": 1718724659,
+      "expires": 1718734441,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "__Secure-zitadel.useragent",
-      "value": "MTY4NzE4ODY2MXxTb2lmWm1RVEpwUVMtakF5ZnlGa2NNNlpKR3dMZWp5UGN0RHpGeXhxV3l2WEoySmJXcGlGWEVZOEN4cy1jT1FHV1dydzM3N0UyMldCWnp3Zk1mNkRUWmo3VENJU1NRTT18R-R7DOUJnuQwE4goZCNfwTyLkmQvR3k9HJNpAe3fYoQ=",
+      "value": "MTY4NzE5ODQ0M3xZOG5zRXNSSXJJYWJDWU1aZFBURmF5U0h2ZlRsdFpLdFF6OG9iVWplb0xiVWx5T2VTa18tcXZCcFpRVXB5ZzNRRld2UE8zRndXT2NsR2hWb0lta3QyZHhlYTdGbUgwQT18mYXhqiksh94ZA03Vvz-9CmsiEWTOmPYvuSnUp_VVNww=",
       "domain": ".cas-fee-advanced-ocvdad.zitadel.cloud",
       "path": "/",
-      "expires": 1718724662.020633,
+      "expires": 1718734443.59394,
       "httpOnly": true,
       "secure": true,
       "sameSite": "Lax"
     },
     {
       "name": "next-auth.session-token",
-      "value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..s7Y9uEXTn51xzASF.sFzq9RwCa9vDnhalxBI0xV0eFDMRnn3ZzlZPxi_hD_VtXvyJ4F0wbpEDAQIw_hlo2LI7U-_NhqvJeVl5m-y3JVN_VuRw8_gmGm-JSU7qLH6btXNGC-SXFNKtu-MWmFf48QSPxjbWu58ID-XYHs4x9JkCTEcVca0Pg1l6vVMxIU0ixlLWfiRtMc42zEH6_AEDigco3hHDj94vVGR_yYAh_ZWT11sjKblsAQeIlHbBHn0obVW4fk-0ZRep7J-2boIe4SiCk6Ms7TsB5YmkeXoA1GhiVdH8mTw5hpPwXuSDgMsFNlxq8fowhjYZBC9Pcg7kZfssk7zuX2ISErvfKhlE4Eb8U37Trs6Ic7-eIvtAC5lviHt_HHHUQkAjd7_ipUYfmR46mqULbSSy3ZS9cQWhUK09ukBiOoFTTuYxY4JtByJdvaldS6o.WKLiM0A-mUazpUm7igJZWQ",
+      "value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..-wREePFAIT443Kay.Yh2of36IUB4yw8IL0Wnkp-sAcdeWEvChCeFZg3f518JDGeT87fF0ud1sc6HJhE3jUPNdTP67H3vA5oUZN212mhBRZrqzw0G1kb7nsxwFg3-KcZQGSBcH50Fx-VRZaRN8q9QvXQ6Si14h3Qx8QLaQIBkBukUgBzpMBbon7QpVsfY2yp3REBwMxk2ZtAJ4uehhlvh9nO67TPxeyc_s1xB9_Uv6RoDO6vjLgknukrdQf4Fh9ex6sbjs6zfoU-xZhHKyjVEFUYlqAAHzlRmqama524Qu2OcXD37-24cmKrsGmKGP3gML0yj-v9etqif-i1KiWsT0DQ0DynMQ7PF5gqKZU2IvuimiiarXN3knw_kx7YAzjFOd8IIHIwehfib7sD3FyertKwduJkZlFnixMbsOI7vW6RYrw9EM2ytS_O0WnWEjb3ZKeu0.h-KfZAnDin7L5PBnxLWlGQ",
       "domain": "localhost",
       "path": "/",
-      "expires": 1687231865.039902,
+      "expires": 1687241646.142859,
       "httpOnly": true,
       "secure": false,
       "sameSite": "Lax"
@@ -67,7 +67,7 @@
       "localStorage": [
         {
           "name": "nextauth.message",
-          "value": "{\"event\":\"session\",\"data\":{\"trigger\":\"getSession\"},\"timestamp\":1687188665}"
+          "value": "{\"event\":\"session\",\"data\":{\"trigger\":\"getSession\"},\"timestamp\":1687198446}"
         }
       ]
     }

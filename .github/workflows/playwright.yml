@@ -7,21 +7,24 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: mcr.microsoft.com/playwright:v1.35.0-jammy
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
       - name: Install dependencies
         run: |
           echo "@smartive-education:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
           npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npx playwright test
+        env:
+          NEXT_PUBLIC_QWACKER_API_URL: '${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }}'
+          NEXTAUTH_SECRET: '${{ secrets.NEXTAUTH_SECRET }}'
+          NEXTAUTH_URL: '${{ secrets.NEXTAUTH_URL }}'
+          ZITADEL_ISSUER: '${{ secrets.ZITADEL_ISSUER }}'
+          ZITADEL_CLIENT_ID: '${{ secrets.ZITADEL_CLIENT_ID }}'
+          NEXT_PUBLIC_ZITADEL_EMAIL: '${{ secrets.NEXT_PUBLIC_ZITADEL_EMAIL }}'
+          ZITADEL_USER_PW: '${{ secrets.ZITADEL_USER_PW }}'
       - uses: actions/upload-artifact@v3
         if: always()
         with:

@@ -39,4 +39,4 @@ jobs:
             NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: true
           tags: |
-            europe-west6-docker.pkg.dev/bytlight-app/bytelightapp/imic:latest
+            europe-west6-docker.pkg.dev/bytelight-app/bytelightapp/imic:latest

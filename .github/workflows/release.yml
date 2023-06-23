@@ -13,20 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_BYTELIGHT }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          NEXT_PUBLIC_QWACKER_API_URL: ${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }}
-          ZITADEL_ISSUER: ${{ secrets.ZITADEL_ISSUER }}
-          ZITADEL_CLIENT_ID: ${{ secrets.ZITADEL_CLIENT_ID }}
         run: |
           docker build \
            --build-arg NPM_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-           --build-arg NEXTAUTH_URL="${NEXTAUTH_URL}" \
-           --build-arg NEXTAUTH_SECRET="${NEXTAUTH_SECRET}" \
-           --build-arg NEXT_PUBLIC_QWACKER_API_URL="${NEXT_PUBLIC_QWACKER_API_URL}" \
-           --build-arg ZITADEL_ISSUER="${ZITADEL_ISSUER}" \
-           --build-arg ZITADEL_CLIENT_ID="${ZITADEL_CLIENT_ID}" \
+           --build-arg NEXTAUTH_URL=${{secrets.NEXTAUTH_URL}} \
+           --build-arg NEXTAUTH_SECRET=${{secrets.NEXTAUTH_SECRET}} \
+           --build-arg NEXT_PUBLIC_QWACKER_API_URL=${{secrets.NEXT_PUBLIC_QWACKER_API_URL}} \
+           --build-arg ZITADEL_ISSUER=${{secrets.ZITADEL_ISSUER}} \
+           --build-arg ZITADEL_CLIENT_ID=${{secrets.ZITADEL_CLIENT_ID}} \
            --tag app-bytelight:$(date +%s) \
            .

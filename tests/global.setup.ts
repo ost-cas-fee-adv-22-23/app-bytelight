@@ -4,6 +4,7 @@ import { STORAGE_STATE } from '../playwright.config';
 setup('do login', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Login' }).click();
+  // await page.getByRole('button', { name: 'Sign in with zitadel' }).click();
   const input = page.getByPlaceholder('username@domain');
   await input.fill('test-bytelight@smartive.zitadel.cloud');
   await page.getByText('next').click();

@@ -55,7 +55,7 @@ export const MumblePost: FC<Props> = ({ post }) => {
             <Link href={`/profile/${post.creator}`}>
               <IconLabel variant="violet" value={post.profile.user.userName} icon={<ProfileIcon size="12" />} />
             </Link>
-            <Link href={`/mumble/${post.id}`}>
+            <Link data-testid="go-to-post" href={`/mumble/${post.id}`}>
               <IconLabel variant="gray" value={datePrint} icon={<ClockIcon size="12" />} />
             </Link>
           </div>

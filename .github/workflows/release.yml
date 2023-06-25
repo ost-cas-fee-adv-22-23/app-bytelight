@@ -40,3 +40,36 @@ jobs:
           push: true
           tags: |
             europe-west6-docker.pkg.dev/bytelight-app/bytelightapp/imic:latest
+
+  deploy:
+    name: Deploy Docker Image on Google Cloud Run
+    runs-on: ubuntu-latest
+    env:
+      TF_CLI_ARGUMENTS: -var nextauthUrl=${{ secrets.NEXTAUTH_URL }} -var nextauthSecret=${{ secrets.NEXTAUTH_SECRET }} -var zitadelIssuer=${{ secrets.ZITADEL_ISSUER }} -var zitadelClientId=${{ secrets.ZITADEL_CLIENT_ID }} -var nextPublicQwackerApiUrl=${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }}
+    defaults:
+      run:
+        working-directory: ./terraform
+    needs:
+      - release
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Google Cloud with Credentials
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GAR_JSON_KEY }}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve ${{ env.TF_CLI_ARGUMENTS }}

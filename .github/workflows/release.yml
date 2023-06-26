@@ -2,11 +2,9 @@ name: Build Docker-Image
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, feat/add-correct-callback]
   pull_request:
-    branches:
-      - main
+    branches: [main, feat/add-correct-callback]
 
 jobs:
   release:

@@ -1,13 +1,17 @@
 name: Check TFLint
+
 on:
   push:
     branches:
       - main
+
 jobs:
   format-hcl:
+    name: Terraform Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Check linting of Terraform files
         uses: devops-infra/action-tflint@v0.3

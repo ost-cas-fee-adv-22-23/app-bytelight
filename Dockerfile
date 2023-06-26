@@ -1,6 +1,18 @@
 # Dependencies stage
 FROM node:16-alpine as dependencies
-ARG NPM_TOKEN
+ARG NPM_TOKEN \
+    NEXTAUTH_URL \
+    NEXTAUTH_SECRET \
+    ZITADEL_ISSUER \
+    ZITADEL_CLIENT_ID \
+    NEXT_PUBLIC_QWACKER_API_URL
+
+ENV NPM_TOKEN=${NPM_TOKEN} \
+    NEXTAUTH_URL=${NEXTAUTH_URL} \
+    NEXTAUTH_SECRET=${NEXTAUTH_SECRET} \
+    ZITADEL_ISSUER=${ZITADEL_ISSUER} \
+    ZITADEL_CLIENT_ID=${ZITADEL_CLIENT_ID} \
+    NEXT_PUBLIC_QWACKER_API_URL=${NEXT_PUBLIC_QWACKER_API_URL}
 
 WORKDIR /app
 
@@ -22,12 +34,6 @@ WORKDIR /app
 COPY --from=dependencies /app/package*.json ./
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/.next ./.next
-
-ENV NEXTAUTH_URL=
-ENV NEXTAUTH_SECRET=
-ENV NEXT_PUBLIC_QWACKER_API_URL=
-ENV ZITADEL_ISSUER=
-ENV ZITADEL_CLIENT_ID=
 
 EXPOSE 3000
 

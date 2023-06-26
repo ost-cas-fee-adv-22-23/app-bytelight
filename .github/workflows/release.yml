@@ -1,6 +1,5 @@
 name: Build Docker-Image
 
-# check re run
 on:
   push:
     branches:

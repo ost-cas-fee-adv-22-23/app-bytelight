@@ -2,9 +2,7 @@ name: Build Docker-Image
 
 on:
   push:
-    branches: [main, feat/add-terraform]
-  pull_request:
-    branches: [main, feat/add-terraform]
+    branches: main
 
 jobs:
   release:

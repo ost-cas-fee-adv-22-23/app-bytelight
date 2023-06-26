@@ -44,27 +44,25 @@ resource "google_cloud_run_service" "bytelight-app" {
         }
 
         env {
-          name = NEXTAUTH_SECRET
+          name = "NEXTAUTH_SECRET"
           value = var.nextauthSecret
         }
         env {
-          name = NEXTAUTH_URL
+          name = "NEXTAUTH_URL"
           value = var.nextauthUrl
         }
         env {
-          name = ZITADEL_ISSUER
+          name = "ZITADEL_ISSUER"
           value = var.zitadelIssuer
         }
         env {
-          name = ZITADEL_CLIENT_ID
+          name = "ZITADEL_CLIENT_ID"
           value = var.zitadelClientId
         }
         env {
-          name =  NEXT_PUBLIC_QWACKER_API_URL
+          name =  "NEXT_PUBLIC_QWACKER_API_URL"
           value = var.nextPublicQwackerApiUrl
         }
-
-
 
         ports {
           name           = "http1"

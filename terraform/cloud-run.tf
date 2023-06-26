@@ -31,7 +31,6 @@ resource "google_cloud_run_service" "bytelight-app" {
   name                       = local.name
   location                   = local.gcp_region
   autogenerate_revision_name = true
-  instance_type              = "t1.2xlarge"
 
   template {
     spec {

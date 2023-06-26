@@ -1,6 +1,6 @@
 name: Build Docker-Image
 
-# check infracost
+# check
 on:
   push:
     branches:

@@ -1,4 +1,4 @@
-name: ESLint and Prettier
+name: TFLint, ESLint & Prettier
 
 on:
   push:
@@ -18,3 +18,5 @@ jobs:
         run: npm ci
       - name: Run ESLint and Prettier
         run: npm run style-check
+      - name: Check linting of Terraform files
+        uses: devops-infra/action-tflint@v0.3

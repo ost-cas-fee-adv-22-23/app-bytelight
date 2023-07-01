@@ -43,14 +43,33 @@ export default defineConfig({
       testMatch: /global.setup\.ts/,
     },
     {
-      name: 'logged in chromium',
-      testMatch: '**/*.loggedin.spec.ts',
+      name: 'e2e',
       dependencies: ['setup'],
+      testDir: './tests/',
       use: {
         storageState: STORAGE_STATE,
         ...devices['Desktop Chrome'],
       },
     },
+    {
+      name: 'e2e-local',
+      dependencies: ['setup'],
+      testDir: './tests/',
+      testIgnore: 'app.e2e-snapshot.spec.ts',
+      use: {
+        storageState: STORAGE_STATE,
+        ...devices['Desktop Chrome'],
+      },
+    },
+    // {
+    //   name: 'e2e-local',
+    //   testIgnore: 'app.loggedin-snapshot.spec.ts',
+    //   dependencies: ['setup'],
+    //   use: {
+    //     storageState: STORAGE_STATE,
+    //     ...devices['Desktop Chrome'],
+    //   },
+    // },
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

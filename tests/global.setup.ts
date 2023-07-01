@@ -1,10 +1,12 @@
-import { test as setup } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
 import { STORAGE_STATE } from '../playwright.config';
 
 setup('do login', async ({ page }) => {
-  await page.goto('http://localhost:3000/');
+  await page.goto('/');
+  await page.waitForURL('http://localhost:3000/login');
   await page.getByRole('button', { name: 'Login' }).click();
-  // await page.getByRole('button', { name: 'Sign in with zitadel' }).click();
+  await page.waitForURL(/.*.zitadel.cloud\/ui\/login\/login.*/);
+  await expect(page).toHaveURL(/.*.zitadel.cloud\/ui\/login\/login.*/);
   const input = page.getByPlaceholder('username@domain');
   await input.fill('test-bytelight@smartive.zitadel.cloud');
   await page.getByText('next').click();

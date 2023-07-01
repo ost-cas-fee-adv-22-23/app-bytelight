@@ -32,7 +32,7 @@ test.describe('Mumble e2e Tests', () => {
     expect(await page.getByRole('button', { name: '1 Like' }).first().isVisible());
   });
 
-  test.only('comment a post', async ({ page }) => {
+  test('comment a post', async ({ page }) => {
     await page.getByPlaceholder('Deine Meinung zählt').fill(`Ich bin ein TEST! Für einen Kommentar! id: ${testIdPost}`);
     await Promise.all([page.waitForResponse(/\/posts/), await page.getByRole('button', { name: 'Absenden' }).click()]);
     expect(await page.getByText(`Ich bin ein TEST! Für einen Kommentar! id: ${testIdPost}`).isVisible());

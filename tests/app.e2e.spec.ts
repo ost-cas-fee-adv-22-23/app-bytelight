@@ -43,7 +43,6 @@ test.describe('Mumble e2e Tests', () => {
     expect(await page.getByTestId('go-to-post').first().waitFor());
     await page.getByTestId('go-to-post').first().click();
     await page.waitForURL(/\/mumble/);
-    await expect(page).toHaveURL(/\/mumble/);
     expect(await page.getByText(`Ich bin ein TEST! Für einen Kommentar! id: ${testIdPost}`).isVisible());
     await page.getByPlaceholder('Deine Meinung zählt').fill('Ich bin ein Kommentar!');
     await Promise.all([page.waitForResponse(/\/posts/), await page.getByRole('button', { name: 'Absenden' }).click()]);
@@ -57,7 +56,6 @@ test.describe('Mumble e2e Tests', () => {
     expect(await page.getByTestId('go-to-post').first().waitFor());
     await page.getByTestId('go-to-post').first().click();
     await page.waitForURL(/\/mumble/);
-    await expect(page).toHaveURL(/\/mumble/);
     expect(await page.getByText(`Ich bin ein TEST! Für einen Comment! id: ${testIdPost}`).isVisible());
   });
 });

@@ -1,14 +1,13 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     {
       id: 'zitadel',
       name: 'zitadel',
       type: 'oauth',
       version: '2',
-      wellKnown: 'https://cas-fee-advanced-ocvdad.zitadel.cloud/.well-known/openid-configuration',
-      clientId: '181236603920908545@cas_fee_adv_qwacker_prod',
+      wellKnown: process.env.ZITADEL_ISSUER,
       authorization: {
         params: {
           scope: 'openid email profile',
@@ -19,15 +18,61 @@ export default NextAuth({
       client: {
         token_endpoint_auth_method: 'none',
       },
-      async profile(profile) {
+      async profile(_, { access_token }) {
+        const { userinfo_endpoint } = await (
+          await fetch(`${process.env.ZITADEL_ISSUER}/.well-known/openid-configuration`)
+        ).json();
+        const profile = await (
+          await fetch(userinfo_endpoint, {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          })
+        ).json();
+
         return {
           id: profile.sub,
-          username: profile.preferred_username?.replace('@smartive.zitadel.cloud', ''),
+          firstname: profile.given_name,
+          lastname: profile.family_name,
+          username: profile.preferred_username.replace('@smartive.zitadel.cloud', ''),
+          avatarUrl: profile.picture || undefined,
         };
       },
+      clientId: process.env.ZITADEL_CLIENT_ID,
     },
   ],
   session: {
     maxAge: 12 * 60 * 60, // 12 hours
   },
-});
+  callbacks: {
+    // useSession()
+    // getToken
+    async jwt({ token, user, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.expiresAt = (account.expires_at as number) * 1000;
+      }
+      if (user) {
+        token.user = user;
+      }
+
+      if (Date.now() > (token.expiresAt as number)) {
+        delete token.accessToken;
+      }
+
+      return token;
+    },
+    // useSession()
+    async session({ session, token }) {
+      session.user = token.user || {};
+      session.accessToken = token.accessToken;
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);

@@ -1,0 +1,39 @@
+name: Playwright Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.35.0-jammy
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          echo "@smartive-education:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          npm ci
+      - name: Run Playwright tests
+        run: npx playwright test --project=e2e
+        env:
+          NEXT_PUBLIC_QWACKER_API_URL: '${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }}'
+          NEXTAUTH_SECRET: '${{ secrets.NEXTAUTH_SECRET }}'
+          TEST_URL: '${{ secrets.TEST_URL}}'
+          ZITADEL_ISSUER: '${{ secrets.ZITADEL_ISSUER }}'
+          ZITADEL_CLIENT_ID: '${{ secrets.ZITADEL_CLIENT_ID }}'
+          NEXT_PUBLIC_ZITADEL_EMAIL: '${{ secrets.NEXT_PUBLIC_ZITADEL_EMAIL }}'
+          ZITADEL_USER_PW: '${{ secrets.ZITADEL_USER_PW }}'
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

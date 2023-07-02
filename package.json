@@ -11,8 +11,7 @@
     "prettier": "prettier --write . \"./**/*.{ts,tsx}\"",
     "prettier:check": "prettier --check \"./**/*.{ts,tsx}\"",
     "style-check": "npm run lint && npm run prettier:check",
-    "test": "npm run test:e2e",
-    "test:e2e": "playwright test --project=e2e-local",
+    "test:e2e:local": "npx playwright test --project=e2e-local",
     "test:e2e:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.35.0-jammy /bin/bash -c \"npx playwright test --project=e2e\"",
     "test:e2e:update-snapshot": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.35.0-jammy /bin/bash -c \"npx playwright test --update-snapshots --project=e2e\""
   },

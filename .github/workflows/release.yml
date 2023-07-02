@@ -7,10 +7,6 @@ on:
   push:
     branches:
       - main
-  workflow_run:
-    workflows: ['Playwright Tests']
-    types:
-      - completed
 
 jobs:
   release:

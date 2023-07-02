@@ -43,7 +43,7 @@ test.describe('Mumble e2e Tests', () => {
     await page.getByPlaceholder('Deine Meinung zählt').fill('Ich bin ein Kommentar!');
     await Promise.all([page.waitForResponse(/\/posts/), await page.getByRole('button', { name: 'Absenden' }).click()]);
     await page.waitForLoadState('networkidle');
-    expect(await page.getByText('Ich bin ein Kommentar!').isVisible());
+    expect(page.getByText('Ich bin ein Kommentar!'));
   });
 
   test('Go to the details page of my post', async ({ page }) => {

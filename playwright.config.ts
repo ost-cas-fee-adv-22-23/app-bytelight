@@ -61,15 +61,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
       },
     },
-    // {
-    //   name: 'e2e-local',
-    //   testIgnore: 'app.loggedin-snapshot.spec.ts',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     storageState: STORAGE_STATE,
-    //     ...devices['Desktop Chrome'],
-    //   },
-    // },
+
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

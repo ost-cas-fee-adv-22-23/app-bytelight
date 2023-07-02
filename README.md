@@ -1,9 +1,5 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Live Demo
-
-The latest version of the App is available [here](https://app-bytelight-two.vercel.app/).
-
 ## Clone the repo.
 
 `git clone https://github.com/smartive-education/app-bytelight`
@@ -27,8 +23,10 @@ Create a `.env` file and copy these keys and insert confidential values
     NEXT_PUBLIC_QWACKER_API_URL= [QWACKER_API_URL]
 
     # Authentication
-    NEXTAUTH_URL=http://localhost:3000
+    NEXTAUTH_URL=[NEXTAUTH_URL]
     NEXTAUTH_SECRET=[NEXTAUTH_SECRET]
+
+    TEST_URL=http://localhost:3000
 
     ZITADEL_ISSUER=[ZITADEL ISSUER URL]
     ZITADEL_CLIENT_ID=[ZITADEL CLIENT ID]
@@ -77,8 +75,42 @@ npm run prettier
 npm run prettier:check
 ```
 
-#### Prettier & ESLint
+#### TFLing, Prettier and ESLint
 
 ```console
 npm run style-check
 ```
+
+# Testing
+
+## Running Tests locally
+
+This repository provides a set of e2e tests located in the tests directory. To run the tests locally, you can use the following command:
+
+```console
+    npm run test:e2e:local
+```
+
+This will run the e2e tests without any screenshot tests.
+
+## Running Tests in Docker
+
+To run the tests in a Docker container, you can use the following command:
+
+```console
+    npm run test:e2e:docker
+```
+
+This command will pull the latests Playwright Image to run all the tests including screenshot tests within a Docker container.
+
+## Update screenshots in Docker
+
+To update the screenshots, you can use the following command:
+
+```console
+    npm run test:e2e:update-snapshot
+```
+
+## Writing Tests
+
+For information on how to write tests using Playwright, refer to the official Playwright [Playwright](https://playwright.dev/) documentation.
